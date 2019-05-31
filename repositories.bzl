@@ -7,10 +7,10 @@ def _maybe(repo, name, **kwargs):
     if not native.existing_rule(name):
         repo(name = name, **kwargs)
 
-def io_bazel_skylib():
+def bazel_skylib():
     _maybe(
         http_archive,
-        name = "io_bazel_skylib",
+        name = "bazel_skylib",
         url = "https://github.com/bazelbuild/bazel-skylib/archive/0.8.0.tar.gz",
         sha256 = "2ea8a5ed2b448baf4a6855d3ce049c4c452a6470b1efd1504fdb7c1c134d220a",
         strip_prefix = "bazel-skylib-0.8.0",

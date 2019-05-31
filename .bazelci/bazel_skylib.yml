@@ -1,44 +1,44 @@
 ---
 tasks:
   ubuntu1804:
-    working_directory: "io_bazel_skylib"
+    working_directory: "bazel_skylib"
     build_targets:
-    - "@io_bazel_skylib//..."
+    - "@bazel_skylib//..."
     build_flags:
     - "--incompatible_remap_main_repo"
     test_targets:
-    - "@io_bazel_skylib//..."
+    - "@bazel_skylib//..."
     test_flags:
     - "--test_env=PATH"
   ubuntu1604:
-    working_directory: "io_bazel_skylib"
+    working_directory: "bazel_skylib"
     build_targets:
-    - "@io_bazel_skylib//..."
+    - "@bazel_skylib//..."
     build_flags:
     - "--incompatible_remap_main_repo"
     test_targets:
-    - "@io_bazel_skylib//..."
+    - "@bazel_skylib//..."
     test_flags:
     - "--test_env=PATH"
   macos:
-    working_directory: "io_bazel_skylib"
+    working_directory: "bazel_skylib"
     build_targets:
-    - "@io_bazel_skylib//..."
+    - "@bazel_skylib//..."
     build_flags:
     - "--incompatible_remap_main_repo"
     test_targets:
-    - "@io_bazel_skylib//..."
+    - "@bazel_skylib//..."
     test_flags:
     - "--test_env=PATH"
   windows:
-    working_directory: "io_bazel_skylib"
+    working_directory: "bazel_skylib"
     build_targets:
-    - "@io_bazel_skylib//..."
+    - "@bazel_skylib//..."
     build_flags:
     - "--incompatible_remap_main_repo"
     test_targets:
     - "--"
-    - "@io_bazel_skylib//..."
+    - "@bazel_skylib//..."
     test_flags:
     # TODO(laszlocsomor): remove "--test_env=LOCALAPPDATA" after
     # https://github.com/bazelbuild/bazel/issues/7761 is fixed

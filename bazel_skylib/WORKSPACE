@@ -4,11 +4,11 @@ local_repository(name = "bazel_federation",
                  path = "..",
 )
 
-load("@bazel_federation//:repositories.bzl", "io_bazel_skylib")
+load("@bazel_federation//:repositories.bzl", "bazel_skylib")
 
-io_bazel_skylib()
+bazel_skylib()
 
-load("@io_bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
 bazel_skylib_workspace()
 
