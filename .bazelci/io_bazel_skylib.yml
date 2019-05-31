@@ -11,7 +11,7 @@ tasks:
     test_flags:
     - "--test_env=PATH"
   ubuntu1604:
-    working_directory: "bazel_skylib"
+    working_directory: "io_bazel_skylib"
     build_targets:
     - "@io_bazel_skylib//..."
     build_flags:
@@ -21,7 +21,7 @@ tasks:
     test_flags:
     - "--test_env=PATH"
   macos:
-    working_directory: "bazel_skylib"
+    working_directory: "io_bazel_skylib"
     build_targets:
     - "@io_bazel_skylib//..."
     build_flags:
@@ -31,7 +31,7 @@ tasks:
     test_flags:
     - "--test_env=PATH"
   windows:
-    working_directory: "bazel_skylib"
+    working_directory: "io_bazel_skylib"
     build_targets:
     - "@io_bazel_skylib//..."
     build_flags:
