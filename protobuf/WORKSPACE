@@ -5,9 +5,9 @@ local_repository(name = "bazel_federation",
 )
 
 load("@bazel_federation//:repositories.bzl", "protobuf")
-load("//:protobuf_test_deps.bzl", "protobuf_test_deps")	
+load("//:protobuf_internal_deps.bzl", "protobuf_internal_deps")	
 
-protobuf_test_deps()
+protobuf_internal_deps()
 protobuf()
 
 bind(
