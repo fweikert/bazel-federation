@@ -3,41 +3,49 @@ tasks:
   ubuntu1804:
     working_directory: "bazel_skylib"
     build_targets:
+    - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     build_flags:
     - "--incompatible_remap_main_repo"
     test_targets:
+    - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     test_flags:
     - "--test_env=PATH"
   ubuntu1604:
     working_directory: "bazel_skylib"
     build_targets:
+    - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     build_flags:
     - "--incompatible_remap_main_repo"
     test_targets:
+    - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     test_flags:
     - "--test_env=PATH"
   macos:
     working_directory: "bazel_skylib"
     build_targets:
+    - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     build_flags:
     - "--incompatible_remap_main_repo"
     test_targets:
+    - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     test_flags:
     - "--test_env=PATH"
   windows:
     working_directory: "bazel_skylib"
     build_targets:
+    - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     build_flags:
     - "--incompatible_remap_main_repo"
     test_targets:
     - "--"
+    - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     test_flags:
     # TODO(laszlocsomor): remove "--test_env=LOCALAPPDATA" after
