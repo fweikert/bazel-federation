@@ -13,8 +13,11 @@ def bazel_skylib():
         strip_prefix = "bazel-skylib-0.8.0",
     )
 
-def protobuf():
+def protobuf_deps():
     bazel_skylib()
+
+def protobuf():
+    protobuf_deps()
     maybe(
         http_archive,
         name = "com_google_protobuf",
