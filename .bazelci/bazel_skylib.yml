@@ -4,11 +4,13 @@ tasks:
     name: "skylib"
     working_directory: "bazel_skylib"
     build_targets:
+    - "--"
     - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     build_flags:
     - "--incompatible_remap_main_repo"
     test_targets:
+    - "--"
     - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     test_flags:
@@ -17,11 +19,13 @@ tasks:
     name: "skylib"
     working_directory: "bazel_skylib"
     build_targets:
+    - "--"
     - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     build_flags:
     - "--incompatible_remap_main_repo"
     test_targets:
+    - "--"
     - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     test_flags:
@@ -30,11 +34,13 @@ tasks:
     name: "skylib"
     working_directory: "bazel_skylib"
     build_targets:
+    - "--"
     - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     build_flags:
     - "--incompatible_remap_main_repo"
     test_targets:
+    - "--"
     - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     test_flags:
@@ -43,6 +49,7 @@ tasks:
     name: "skylib"
     working_directory: "bazel_skylib"
     build_targets:
+    - "--"
     - "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
     - "@bazel_skylib//..."
     build_flags:
