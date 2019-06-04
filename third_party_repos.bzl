@@ -20,21 +20,3 @@ def six():
         sha256 = "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a",
         urls = ["https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz#md5=34eed507548117b2ab523ab14b2f8b55"],
     )
-
-def guava():
-    maven_jar(
-        name = "guava_maven",
-        artifact = "com.google.guava:guava:18.0",
-    )
-
-def gson():
-    maven_jar(
-        name = "gson_maven",
-        artifact = "com.google.code.gson:gson:2.7",
-    )
-
-def error_prone():
-    maven_jar(
-        name = "error_prone_annotations_maven",
-        artifact = "com.google.errorprone:error_prone_annotations:2.3.2",
-    )
