@@ -4,9 +4,10 @@ local_repository(name = "bazel_federation",
                  path = "..",
 )
 
-load("@bazel_federation//:repositories.bzl", "protobuf", "protobuf_internal_deps")
+load("@bazel_federation//:repositories.bzl", "protobuf")
+load("//:test_deps.bzl", "test_deps")
 
-protobuf_internal_deps()
+test_deps()
 protobuf()
 
 new_local_repository(
