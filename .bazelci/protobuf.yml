@@ -1,18 +1,21 @@
 ---
 tasks:
   ubuntu1804:
+    name: "protobuf"
     working_directory: "protobuf"
     build_targets:
     - "@com_google_protobuf//..."
     test_targets:
     - "@com_google_protobuf//..."
   macos:
+    name: "protobuf"
     working_directory: "protobuf"
     build_targets:
     - "@com_google_protobuf//..."
     test_targets:
     - "@com_google_protobuf//..."
   windows:
+    name: "protobuf"
     working_directory: "protobuf"
     build_targets:
     - "@com_google_protobuf//..."
