@@ -1,6 +1,7 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("//:setup.bzl", "maybe")
+load("//:third_party_repos.bzl", "zlib")
 
 # Repositories in this file have been tested with Bazel 0.26.0.
 
@@ -13,8 +14,9 @@ def bazel_skylib():
         strip_prefix = "bazel-skylib-0.8.0",
     )
 
+# TODO(fweikert): delete this function if it's not needed by the protobuf project itself.
 def protobuf_deps():
-    bazel_skylib()
+    zlib()
 
 def protobuf():
     protobuf_deps()
