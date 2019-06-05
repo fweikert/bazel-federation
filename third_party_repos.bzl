@@ -59,3 +59,75 @@ def llvm_toolchain():
         strip_prefix = "bazel-toolchain-d0a5b0af3102c7c607f2cf098421fcdbaeaaaf19",
         urls = ["https://github.com/grailbio/bazel-toolchain/archive/d0a5b0af3102c7c607f2cf098421fcdbaeaaaf19.tar.gz"],
     )
+
+JINJA2_BUILD_FILE = """
+py_library(
+    name = "jinja2",
+    srcs = glob(["jinja2/*.py"]),
+    srcs_version = "PY2AND3",
+    deps = [
+        "@markupsafe_archive//:markupsafe",
+    ],
+    visibility = ["//visibility:public"],
+)
+"""
+
+MARKUPSAFE_BUILD_FILE = """
+py_library(
+    name = "markupsafe",
+    srcs = glob(["markupsafe/*.py"]),
+    srcs_version = "PY2AND3",
+    visibility = ["//visibility:public"],
+)
+"""
+
+MISTUNE_BUILD_FILE = """
+py_library(
+    name = "mistune",
+    srcs = ["mistune.py"],
+    srcs_version = "PY2AND3",
+    visibility = ["//visibility:public"],
+)
+"""
+
+def markupsafe():
+    maybe(
+        http_archive,
+        name = "markupsafe_archive",
+        urls = ["https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz#md5=f5ab3deee4c37cd6a922fb81e730da6e"],
+        sha256 = "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3",
+        build_file_content = MARKUPSAFE_BUILD_FILE,
+        strip_prefix = "MarkupSafe-0.23",
+    )
+    native.bind(
+        name = "markupsafe",
+        actual = "@markupsafe_archive//:markupsafe",
+    )
+
+def jinja2():
+    maybe(
+        http_archive,
+        name = "jinja2_archive",
+        urls = ["https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz#md5=edb51693fe22c53cee5403775c71a99e"],
+        sha256 = "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4",
+        build_file_content = JINJA2_BUILD_FILE,
+        strip_prefix = "Jinja2-2.8",
+    )
+    native.bind(
+        name = "jinja2",
+        actual = "@jinja2_archive//:jinja2",
+    )
+
+def mistune():
+    maybe(
+        http_archive,
+        name = "mistune_archive",
+        urls = ["https://pypi.python.org/packages/source/m/mistune/mistune-0.7.1.tar.gz#md5=057bc28bf629d6a1283d680a34ed9d0f"],
+        sha256 = "6076dedf768348927d991f4371e5a799c6a0158b16091df08ee85ee231d929a7",
+        build_file_content = MISTUNE_BUILD_FILE,
+        strip_prefix = "mistune-0.7.1",
+    )
+    native.bind(
+        name = "mistune",
+        actual = "@mistune_archive//:mistune",
+    )
