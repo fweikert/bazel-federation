@@ -8,6 +8,6 @@ load("@bazel_federation//:repositories.bzl", "skydoc")
 
 skydoc(use_deprecated_skydoc=True)
 
-load("//:deps.bzl", "skydoc_internal_deps")	
+load("//:internal_deps.bzl", "skydoc_internal_deps")	
 
 skydoc_internal_deps()

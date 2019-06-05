@@ -5,7 +5,7 @@ local_repository(name = "bazel_federation",
 )
 
 load("@bazel_federation//:repositories.bzl", "rules_go")
-load("//:deps.bzl", "rules_go_internal_deps")	
+load("//:internal_deps.bzl", "rules_go_internal_deps")	
 
 rules_go()
 rules_go_internal_deps()

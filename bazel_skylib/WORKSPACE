@@ -4,7 +4,7 @@ local_repository(name = "bazel_federation",
                  path = "..",
 )
 
-load("//:deps.bzl", "bazel_skylib_internal_deps")	
+load("//:internal_deps.bzl", "bazel_skylib_internal_deps")	
 
 bazel_skylib_internal_deps()
 

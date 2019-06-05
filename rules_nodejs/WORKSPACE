@@ -9,7 +9,7 @@ load("@bazel_federation//:repositories.bzl", "rules_nodejs")
 
 rules_nodejs()
 
-load("//:deps.bzl", "rules_nodejs_internal_deps")	
+load("//:internal_deps.bzl", "rules_nodejs_internal_deps")	
 
 rules_nodejs_internal_deps()
 
