@@ -1,4 +1,3 @@
-load("@bazel_federation//:repositories.bzl", "skydoc")
 load("@bazel_federation//:setup.bzl", "maybe")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
