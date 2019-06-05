@@ -56,8 +56,8 @@ def buildtools():
     maybe(
         http_archive,
         name = "com_github_bazelbuild_buildtools",
-        strip_prefix = "buildtools-<commit hash>",
-        url = "https://github.com/bazelbuild/buildtools/archive/<commit hash>.zip",
+        strip_prefix = "buildtools-f27d1753c8b3210d9e87cdc9c45bc2739ae2c2db",
+        url = "https://github.com/bazelbuild/buildtools/archive/f27d1753c8b3210d9e87cdc9c45bc2739ae2c2db.zip",
     )
 
 def skydoc_deps(use_deprecated_skydoc):
