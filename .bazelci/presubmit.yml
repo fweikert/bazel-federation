@@ -5,4 +5,5 @@ imports:
   - protobuf.yml
   - rules_go.yml
   - rules_nodejs
+  - rules_sass
   - skydoc.yml

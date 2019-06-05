@@ -1,0 +1,23 @@
+workspace(name = "io_bazel_rules_sass_federation_example")
+
+local_repository(name = "bazel_federation",
+                 path = "..",
+)
+
+load("@bazel_federation//:repositories.bzl", "rules_sass")
+
+rules_sass()
+
+load("//:internal_deps.bzl", "rules_sass_internal_deps")	
+
+rules_sass_internal_deps()
+
+# TODO(fweikert): move yarn deps into the federation
+load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
+node_repositories()
+
+load("@io_bazel_rules_sass//:defs.bzl", "sass_repositories")
+sass_repositories()
+
+load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
+go_register_toolchains()

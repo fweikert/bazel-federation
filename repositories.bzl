@@ -89,12 +89,18 @@ def rules_nodejs():
         sha256 = "abcf497e89cfc1d09132adfcd8c07526d026e162ae2cb681dcb896046417ce91",
     )
 
-# TODO(fweikert): add sass
 def rules_sass_deps():
+    bazel_skylib()
     rules_nodejs()
 
 def rules_sass():
     rules_sass_deps()
+    maybe(
+        git_repository,
+        name = "io_bazel_rules_sass",
+        remote = "https://github.com/bazelbuild/rules_sass.git",
+        commit = "8ccf4f1c351928b55d5dddf3672e3667f6978d60",
+    )
 
 def bazel():
     maybe(
