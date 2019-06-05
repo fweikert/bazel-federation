@@ -1,0 +1,48 @@
+workspace(name = "io_bazel_rules_go_federation_example")
+
+local_repository(name = "bazel_federation",
+                 path = "..",
+)
+
+load("@bazel_federation//:repositories.bzl", "rules_go")
+load("//:deps.bzl", "rules_go_internal_deps")	
+
+rules_go_deps()
+rules_go_internal_deps()
+
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains")
+
+go_register_toolchains()
+
+# Needed for tests
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
+bazel_skylib_workspace()
+
+
+load("@io_bazel_rules_go//tests:bazel_tests.bzl", "test_environment")
+
+test_environment()
+
+load("@io_bazel_rules_go//tests/legacy/test_chdir:remote.bzl", "test_chdir_remote")
+
+test_chdir_remote()
+
+load("@io_bazel_rules_go//tests/integration/popular_repos:popular_repos.bzl", "popular_repos")
+
+popular_repos()
+
+load("@com_grail_bazel_toolchain//toolchain:configure.bzl", "llvm_toolchain")
+
+llvm_toolchain(
+    name = "llvm_toolchain",
+    llvm_version = "6.0.0",
+)
+
+load("@bazel_toolchains//rules:rbe_repo.bzl", "rbe_autoconfig")
+
+# Creates toolchain configuration for remote execution with BuildKite CI
+# for rbe_ubuntu1604
+rbe_autoconfig(
+    name = "buildkite_config",
+)
