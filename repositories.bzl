@@ -74,20 +74,22 @@ def skydoc_deps(use_deprecated_skydoc):
 
 def skydoc(use_deprecated_skydoc=False):
     skydoc_deps(use_deprecated_skydoc)
-     maybe(
+    maybe(
         git_repository,
         name = "io_bazel_skydoc",
         commit = "ac5c106412697ffb9364864070bac796b9bb63d3",  # Feb 27, 2019
         remote = "https://github.com/bazelbuild/skydoc.git",
     )
 
-# TODO(fweikert): add sass + nodejs
-def rules_nodejs_deps():
-    pass
-
 def rules_nodejs():
-    rules_nodejs_deps()
+    maybe(
+        http_archive,
+        name = "build_bazel_rules_nodejs",
+        url = "https://github.com/bazelbuild/rules_nodejs/releases/download/0.30.1/rules_nodejs-0.30.1.tar.gz",
+        sha256 = "abcf497e89cfc1d09132adfcd8c07526d026e162ae2cb681dcb896046417ce91",
+    )
 
+# TODO(fweikert): add sass
 def rules_sass_deps():
     rules_nodejs()
 
@@ -105,6 +107,7 @@ def bazel():
 #########################################
 #               TODO                    #
 #########################################
+# TODO(fweikert): check dependencies and fetch them through the federation, too
 
 # TODO(fweikert): add all gazelle dependencies to the federation, even though that might cause problems because of go_repository rules.
 def gazelle():
@@ -116,6 +119,17 @@ def gazelle():
         remote = "https://github.com/bazelbuild/bazel-gazelle",
         shallow_since = "1548631399 -0500",
     )
+
+def bazel_integration_testing():
+    maybe(
+        http_archive,
+        name = "build_bazel_integration_testing",
+        url = "https://github.com/bazelbuild/bazel-integration-testing/archive/13a7d5112aaae5572544c609f364d430962784b1.zip",
+        type = "zip",
+        strip_prefix = "bazel-integration-testing-13a7d5112aaae5572544c609f364d430962784b1",
+        sha256 = "8028ceaad3613404254d6b337f50dc52c0fe77522d0db897f093dd982c6e63ee",
+    )
+
 
 def bazel_toolchains():
     maybe(
