@@ -1,0 +1,16 @@
+workspace(name = "io_bazel_rules_cc_federation_example")
+
+local_repository(name = "bazel_federation",
+                 path = "..",
+)
+
+load("@bazel_federation//:repositories.bzl", "rules_cc")
+
+rules_cc()
+
+load("//:internal_deps.bzl", "rules_cc_internal_deps")	
+
+rules_cc_internal_deps()
+
+load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies", "go_register_toolchains")
+go_register_toolchains()

@@ -131,3 +131,35 @@ def mistune():
         name = "mistune",
         actual = "@mistune_archive//:mistune",
     )
+
+
+def abseil_py():
+    maybe(
+        http_archive,
+        name = "io_abseil_py",
+        sha256 = "74a2203a9b4681851f4f1dfc17f2832e0a16bae0369b288b18b431cea63f0ee9",
+        strip_prefix = "abseil-py-pypi-v0.6.1",
+        urls = [
+            "https://mirror.bazel.build/github.com/abseil/abseil-py/archive/pypi-v0.6.1.zip",
+            "https://github.com/abseil/abseil-py/archive/pypi-v0.6.1.zip",
+        ],
+    )
+
+def py_mock():
+    maybe(
+        http_archive,
+        name = "py_mock",
+        sha256 = "b839dd2d9c117c701430c149956918a423a9863b48b09c90e30a6013e7d2f44f",
+        urls = [
+            "https://mirror.bazel.build/pypi.python.org/packages/source/m/mock/mock-1.0.1.tar.gz",
+            "https://pypi.python.org/packages/source/m/mock/mock-1.0.1.tar.gz",
+        ],
+        strip_prefix = "mock-1.0.1",
+        patch_cmds = [
+            "mkdir -p py/mock",
+            "mv mock.py py/mock/__init__.py",
+            """echo 'licenses(["notice"])' > BUILD""",
+            "touch py/BUILD",
+            """echo 'py_library(name = "mock", srcs = ["__init__.py"], visibility = ["//visibility:public"],)' > py/mock/BUILD""",
+        ],
+    )

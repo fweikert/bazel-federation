@@ -3,6 +3,7 @@ imports:
   - bazel_skylib.yml
   - buildtools.yml
   - protobuf.yml
+  - rules_cc.yml
   - rules_go.yml
   - rules_nodejs
   - rules_sass

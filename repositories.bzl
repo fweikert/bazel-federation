@@ -110,6 +110,14 @@ def bazel():
         commit = "c689bf93917ad0efa8100b3a0fe1b43f1f1a1cdf",  # Mar 19, 2019
     )
 
+def rules_cc():
+    maybe(
+        http_archive,
+        name = "rules_cc",
+        urls = ["https://github.com/bazelbuild/rules_cc/archive/236c6eb75ccf1e4ea9bed8d5e8ca3648a46536b7"],
+        sha256 = "1",
+    )
+
 #########################################
 #               TODO                    #
 #########################################
