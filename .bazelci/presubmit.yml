@@ -4,3 +4,4 @@ imports:
   - buildtools.yml
   - protobuf.yml
   - rules_go.yml
+  - skydoc.yml

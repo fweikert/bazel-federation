@@ -1,7 +1,7 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("//:setup.bzl", "maybe")
-load("//:third_party_repos.bzl", "zlib", "org_golang_x_tools", "org_golang_x_sys")
+load("//:third_party_repos.bzl", "zlib", "org_golang_x_tools", "org_golang_x_sys", "six", "jinja2", "mistune", "markupsafe")
 
 # Repositories in this file have been tested with Bazel 0.26.0.
 
@@ -58,6 +58,48 @@ def buildtools():
         name = "com_github_bazelbuild_buildtools",
         strip_prefix = "buildtools-<commit hash>",
         url = "https://github.com/bazelbuild/buildtools/archive/<commit hash>.zip",
+    )
+
+def skydoc_deps(use_deprecated_skydoc):
+    bazel_skylib()
+    rules_nodejs()
+    rules_sass()
+    six()
+    jinja2()
+    mistune()
+    markupsafe()
+
+    if use_deprecated_skydoc:
+        protobuf()
+
+def skydoc(use_deprecated_skydoc=False):
+    skydoc_deps(use_deprecated_skydoc)
+     maybe(
+        git_repository,
+        name = "io_bazel_skydoc",
+        commit = "ac5c106412697ffb9364864070bac796b9bb63d3",  # Feb 27, 2019
+        remote = "https://github.com/bazelbuild/skydoc.git",
+    )
+
+# TODO(fweikert): add sass + nodejs
+def rules_nodejs_deps():
+    pass
+
+def rules_nodejs():
+    rules_nodejs_deps()
+
+def rules_sass_deps():
+    rules_nodejs()
+
+def rules_sass():
+    rules_sass_deps()
+
+def bazel():
+    maybe(
+        git_repository,
+        name = "io_bazel",
+        remote = "https://github.com/bazelbuild/bazel.git",
+        commit = "c689bf93917ad0efa8100b3a0fe1b43f1f1a1cdf",  # Mar 19, 2019
     )
 
 #########################################

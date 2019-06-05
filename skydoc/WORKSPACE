@@ -1,0 +1,13 @@
+workspace(name = "io_bazel_skydoc_federation_example")
+
+local_repository(name = "bazel_federation",
+                 path = "..",
+)
+
+load("@bazel_federation//:repositories.bzl", "skydoc")
+
+skydoc(use_deprecated_skydoc=True)
+
+load("//:deps.bzl", "skydoc_internal_deps")	
+
+skydoc_internal_deps()
