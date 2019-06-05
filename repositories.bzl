@@ -46,6 +46,20 @@ def rules_go():
         urls = ["https://github.com/bazelbuild/rules_go/releases/download/0.16.5/rules_go-0.16.5.tar.gz"],
     )
 
+
+def buildtools_deps():
+    bazel_skylib()
+    rules_go()
+
+def buildtools():
+    buildtools_deps()
+    maybe(
+        http_archive,
+        name = "com_github_bazelbuild_buildtools",
+        strip_prefix = "buildtools-<commit hash>",
+        url = "https://github.com/bazelbuild/buildtools/archive/<commit hash>.zip",
+    )
+
 #########################################
 #               TODO                    #
 #########################################
@@ -60,8 +74,6 @@ def gazelle():
         remote = "https://github.com/bazelbuild/bazel-gazelle",
         shallow_since = "1548631399 -0500",
     )
-    load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
-    gazelle_dependencies()
 
 def bazel_toolchains():
     maybe(

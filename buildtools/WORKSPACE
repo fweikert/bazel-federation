@@ -1,0 +1,28 @@
+workspace(name = "com_github_bazelbuild_buildtools_federation_example")
+
+local_repository(name = "bazel_federation",
+                 path = "..",
+)
+
+load("@bazel_federation//:repositories.bzl", "buildtools")
+load("//:deps.bzl", "buildtools_internal_deps")	
+
+buildtools_internal_deps()
+buildtools()
+
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains")
+go_register_toolchains()
+
+# TOOD(fweikert): Must be called after gazelle() since we need the go_repository definition
+load("@bazel_federation//:go_repository_hack.bzl", "go_repository", "gazelle_dependencies")
+gazelle_dependencies()
+
+# TODO(fweikert): move that dependency into deps.bzl once the go_repository problem is solved
+load("@bazel_federation//:setup.bzl", "maybe")
+
+maybe(
+    go_repository,
+    name = "skylark_syntax",
+    commit = "a5f7082aabed29c0e429c722292c66ec8ecf9591",
+    importpath = "github.com/google/skylark",
+)

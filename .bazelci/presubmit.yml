@@ -1,5 +1,6 @@
 ---
 imports:
   - bazel_skylib.yml
+  - buildtools.yml
   - protobuf.yml
   - rules_go.yml

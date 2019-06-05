@@ -19,7 +19,6 @@ load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
 bazel_skylib_workspace()
 
-
 load("@io_bazel_rules_go//tests:bazel_tests.bzl", "test_environment")
 
 test_environment()
@@ -46,3 +45,7 @@ load("@bazel_toolchains//rules:rbe_repo.bzl", "rbe_autoconfig")
 rbe_autoconfig(
     name = "buildkite_config",
 )
+
+# TOOD(fweikert): Must be called after gazelle() since we need the go_repository definition
+load("@bazel_federation//:go_repository_hack.bzl", "go_repository", "gazelle_dependencies")
+gazelle_dependencies()
