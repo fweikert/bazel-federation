@@ -11,3 +11,7 @@ skydoc(use_deprecated_skydoc=True)
 load("//:internal_deps.bzl", "skydoc_internal_deps")	
 
 skydoc_internal_deps()
+
+# TODO(fweikert): Remove once the yarn problem is fixed
+load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
+node_repositories()
