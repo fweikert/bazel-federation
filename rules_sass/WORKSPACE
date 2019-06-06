@@ -12,12 +12,12 @@ load("//:internal_deps.bzl", "rules_sass_internal_deps")
 
 rules_sass_internal_deps()
 
-# TODO(fweikert): move yarn deps into the federation
+load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
+go_register_toolchains()
+
+# TODO(fweikert): Remove everything below this comment once the yarn problem is fixed
 load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
 node_repositories()
 
 load("@io_bazel_rules_sass//:defs.bzl", "sass_repositories")
 sass_repositories()
-
-load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
-go_register_toolchains()
