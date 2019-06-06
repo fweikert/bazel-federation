@@ -1,0 +1,1 @@
+workspace(name = "io_bazel_rules_python_federation_example")
