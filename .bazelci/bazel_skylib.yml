@@ -6,7 +6,6 @@ default_targets: &default_targets
 tasks:
   ubuntu1804:
     name: "skylib"
-    working_directory: "bazel_skylib"
     build_targets: *default_targets
     build_flags:
     - "--incompatible_remap_main_repo"
@@ -15,7 +14,6 @@ tasks:
     - "--test_env=PATH"
   ubuntu1604:
     name: "skylib"
-    working_directory: "bazel_skylib"
     build_targets: *default_targets
     build_flags:
     - "--incompatible_remap_main_repo"
@@ -24,7 +22,6 @@ tasks:
     - "--test_env=PATH"
   macos:
     name: "skylib"
-    working_directory: "bazel_skylib"
     build_targets: *default_targets
     build_flags:
     - "--incompatible_remap_main_repo"
@@ -33,7 +30,6 @@ tasks:
     - "--test_env=PATH"
   windows:
     name: "skylib"
-    working_directory: "bazel_skylib"
     build_targets: *default_targets
     build_flags:
     - "--incompatible_remap_main_repo"
