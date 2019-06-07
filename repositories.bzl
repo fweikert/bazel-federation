@@ -113,7 +113,7 @@ def bazel():
 def rules_cc():
     maybe(
         http_archive,
-        name = "rules_cc",
+        name = "io_bazel_rules_cc",
         urls = ["https://github.com/bazelbuild/rules_cc/archive/236c6eb75ccf1e4ea9bed8d5e8ca3648a46536b7"],
         sha256 = "1",
     )
