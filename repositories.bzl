@@ -17,6 +17,7 @@ def bazel_skylib():
 # TODO(fweikert): delete this function if it's not needed by the protobuf project itself.
 def protobuf_deps():
     zlib()
+    protobuf_javalite()
 
 def protobuf():
     protobuf_deps()
@@ -27,6 +28,16 @@ def protobuf():
         strip_prefix = "protobuf-b4f193788c9f0f05d7e0879ea96cd738630e5d51",
         # Commit from 2019-05-15, update to protobuf 3.8 when available.
         url = "https://github.com/protocolbuffers/protobuf/archive/b4f193788c9f0f05d7e0879ea96cd738630e5d51.zip",
+    )
+    native.bind(name = "com_google_protobuf_cc", actual = "@com_google_protobuf")
+    native.bind(name = "com_google_protobuf_java", actual = "@com_google_protobuf")
+
+def protobuf_javalite():
+    maybe(
+        http_archive,
+        name = "com_google_protobuf_javalite",
+        strip_prefix = "protobuf-javalite",
+        urls = ["https://github.com/protocolbuffers/protobuf/archive/javalite.zip"],
     )
 
 
