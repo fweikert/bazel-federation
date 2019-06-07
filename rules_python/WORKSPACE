@@ -12,10 +12,6 @@ load("//:internal_deps.bzl", "rules_python_internal_deps")
 
 rules_python_internal_deps()
 
-load("@io_bazel_rules_sass//:package.bzl", "rules_sass_dependencies")
-
-rules_sass_dependencies()
-
 # Node is used by sass. This weird (anti-?)pattern of initializing a repo we
 # didn't directly import is taken from Skydoc's WORKSPACE.
 load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
