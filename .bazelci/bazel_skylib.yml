@@ -1,8 +1,8 @@
 ---
 default_targets: &default_targets
 - "--"
-- "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
 - "@bazel_skylib//..."
+- "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
 tasks:
   ubuntu1804:
     build_targets: *default_targets
