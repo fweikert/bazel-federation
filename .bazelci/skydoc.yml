@@ -1,9 +1,6 @@
 ---
 default_targets: &default_targets
 - "@io_bazel_skydoc//..."
-default_platform: &default_platform
-  build_targets: *default_targets
-  test_targets: *default_targets
 platforms:
   ubuntu1604:
     build_targets: *default_targets
