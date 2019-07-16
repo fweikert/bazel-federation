@@ -15,29 +15,10 @@
 # limitations under the License.
 
 import argparse
-import base64
 import codecs
-import datetime
-import hashlib
-import json
-import multiprocessing
 import os
 import os.path
-import random
-import re
-from shutil import copyfile
-import shutil
-import stat
-import subprocess
-import sys
-import tempfile
-import threading
-import time
 import urllib.request
-import uuid
-import yaml
-from urllib.request import url2pathname
-from urllib.parse import urlparse
 
 
 WORKSPACE_TEMPLATE = ("""workspace(name = "{project}_federation_example")
