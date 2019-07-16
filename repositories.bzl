@@ -1,137 +1,178 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+load("//:setup.bzl", "maybe")
+load("//:third_party_repos.bzl", "zlib", "org_golang_x_tools", "org_golang_x_sys", "six", "jinja2", "mistune", "markupsafe")
 
 # Repositories in this file have been tested with Bazel 0.26.0.
 
-def _maybe(repo, name, **kwargs):
-    if not native.existing_rule(name):
-        repo(name = name, **kwargs)
-
 def bazel_skylib():
-    _maybe(
+    maybe(
         http_archive,
         name = "bazel_skylib",
-        url = "https://github.com/bazelbuild/bazel-skylib/releases/download/0.8.0/bazel-skylib.0.8.0.tar.gz",
-        sha256 = "2ef429f5d7ce7111263289644d233707dba35e39696377ebab8b0bc701f7818e",
+        url = "https://github.com/bazelbuild/bazel-skylib/archive/0.8.0.tar.gz",
+        sha256 = "2ea8a5ed2b448baf4a6855d3ce049c4c452a6470b1efd1504fdb7c1c134d220a",
+        strip_prefix = "bazel-skylib-0.8.0",
     )
 
+# TODO(fweikert): delete this function if it's not needed by the protobuf project itself.
+def protobuf_deps():
+    zlib()
+    protobuf_javalite()
 
-# The @federation markers are an experiment in how to pick up dependency stanzas
-# from the rule sets. Each rule set should have a deps.bzl file. Inside those,
-# there will be the @federation markers. Those must be designed so they can
-# be extracted and dropped directly into this file, replacing the same stanza.
-
-
-# @federation: BEGIN @rules_pkg
-# TODO: ptr to where this was extracted from
-# https://github.com/bazelbuild/rules_pkg/pkg/deps.bzl
-def rules_pkg_dependencies():
-    # Needed for helper tools
-    _maybe(
+def protobuf():
+    protobuf_deps()
+    maybe(
         http_archive,
-        name = "abseil_py",
-        urls = [
-            "https://github.com/abseil/abseil-py/archive/pypi-v0.7.1.tar.gz",
-        ],
-        sha256 = "3d0f39e0920379ff1393de04b573bca3484d82a5f8b939e9e83b20b6106c9bbe",
-        strip_prefix = "abseil-py-pypi-v0.7.1",
+        name = "com_google_protobuf",
+        sha256 = "b404fe166de66e9a5e6dab43dc637070f950cdba2a8a4c9ed9add354ed4f6525",
+        strip_prefix = "protobuf-b4f193788c9f0f05d7e0879ea96cd738630e5d51",
+        # Commit from 2019-05-15, update to protobuf 3.8 when available.
+        url = "https://github.com/protocolbuffers/protobuf/archive/b4f193788c9f0f05d7e0879ea96cd738630e5d51.zip",
     )
+    native.bind(name = "com_google_protobuf_cc", actual = "@com_google_protobuf")
+    native.bind(name = "com_google_protobuf_java", actual = "@com_google_protobuf")
 
-    # Needed by abseil-py. They do not use deps yet.
-    _maybe(
+def protobuf_javalite():
+    maybe(
         http_archive,
-        name = "six_archive",
-        urls = [
-            "http://mirror.bazel.build/pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz",
-            "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz",
-        ],
-        sha256 = "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a",
-        strip_prefix = "six-1.10.0",
-        build_file = "@abseil_py//third_party:six.BUILD"
+        name = "com_google_protobuf_javalite",
+        strip_prefix = "protobuf-javalite",
+        urls = ["https://github.com/protocolbuffers/protobuf/archive/javalite.zip"],
     )
 
 
-def rules_pkg_register_toolchains():
-    pass
-
-# @federation: END @rules_pkg
-
-
-def org_golang_x_tools():
-    _maybe(
-        http_archive,
-        name = "org_golang_x_tools",
-        # master^1, as of 2018-11-02 (master is currently broken)
-        urls = ["https://codeload.github.com/golang/tools/zip/92b943e6bff73e0dfe9e975d94043d8f31067b06"],
-        strip_prefix = "tools-92b943e6bff73e0dfe9e975d94043d8f31067b06",
-        type = "zip",
-        patches = [
-            "@io_bazel_rules_go//third_party:org_golang_x_tools-gazelle.patch",
-            "@io_bazel_rules_go//third_party:org_golang_x_tools-extras.patch",
-        ],
-        patch_args = ["-p1"],
-        # gazelle args: -go_prefix golang.org/x/tools
-    )
-
-def org_golang_x_sys():
-    _maybe(
-        git_repository,
-        name = "org_golang_x_sys",
-        remote = "https://github.com/golang/sys",
-        commit = "e4b3c5e9061176387e7cea65e4dc5853801f3fb7",  # master as of 2018-09-28
-        patches = ["@io_bazel_rules_go//third_party:org_golang_x_sys-gazelle.patch"],
-        patch_args = ["-p1"],
-        # gazelle args: -go_prefix golang.org/x/sys
-    )
-
-def io_bazel_rules_go():
+# TODO(fweikert): same as above
+def rules_go_deps():
+    protobuf()
     org_golang_x_tools()
     org_golang_x_sys()
-    http_archive(
+
+
+def rules_go():
+    rules_go_deps()
+    maybe(
+        http_archive,
         name = "io_bazel_rules_go",
-        sha256 = "7be7dc01f1e0afdba6c8eb2b43d2fa01c743be1b9273ab1eaf6c233df078d705",
-        urls = ["https://github.com/bazelbuild/rules_go/releases/download/0.16.5/rules_go-0.16.5.tar.gz"],
+        sha256 = "a82a352bffae6bee4e95f68a8d80a70e87f42c4741e6a448bec11998fcc82329",
+        urls = ["https://github.com/bazelbuild/rules_go/releases/download/0.18.5/rules_go-0.18.5.tar.gz"],
     )
 
-def bazel_gazelle():
-    http_archive(
-        name = "bazel_gazelle",
-        sha256 = "7949fc6cc17b5b191103e97481cf8889217263acf52e00b560683413af204fcb",
-        urls = ["https://github.com/bazelbuild/bazel-gazelle/releases/download/0.16.0/bazel-gazelle-0.16.0.tar.gz"],
-    )
 
-def com_github_bazelbuild_buildtools():
-    http_archive(
+def buildtools_deps():
+    bazel_skylib()
+    rules_go()
+
+def buildtools():
+    buildtools_deps()
+    maybe(
+        http_archive,
         name = "com_github_bazelbuild_buildtools",
-        strip_prefix = "buildtools-0.20.0",
-        url = "https://github.com/bazelbuild/buildtools/archive/0.20.0.zip",
-        sha256 = "7b46f95f1df24a62dbe1953cb7820f4170525f72b93a7f9fe414e027a3151128",
+        strip_prefix = "buildtools-f27d1753c8b3210d9e87cdc9c45bc2739ae2c2db",
+        url = "https://github.com/bazelbuild/buildtools/archive/f27d1753c8b3210d9e87cdc9c45bc2739ae2c2db.zip",
     )
 
-def io_bazel_rules_scala():
+def skydoc_deps(use_deprecated_skydoc):
     bazel_skylib()
-    http_archive(
-        name = "io_bazel_rules_scala",
-        strip_prefix = "rules_scala-300b4369a0a56d9e590d9fea8a73c3913d758e12",
+    rules_nodejs()
+    rules_sass()
+    six()
+    jinja2()
+    mistune()
+    markupsafe()
+
+    if use_deprecated_skydoc:
+        protobuf()
+
+def skydoc(use_deprecated_skydoc=False):
+    skydoc_deps(use_deprecated_skydoc)
+    maybe(
+        git_repository,
+        name = "io_bazel_skydoc",
+        commit = "ac5c106412697ffb9364864070bac796b9bb63d3",  # Feb 27, 2019
+        remote = "https://github.com/bazelbuild/skydoc.git",
+    )
+
+def rules_nodejs():
+    maybe(
+        http_archive,
+        name = "build_bazel_rules_nodejs",
+        url = "https://github.com/bazelbuild/rules_nodejs/releases/download/0.30.1/rules_nodejs-0.30.1.tar.gz",
+        sha256 = "abcf497e89cfc1d09132adfcd8c07526d026e162ae2cb681dcb896046417ce91",
+    )
+
+def rules_sass_deps():
+    bazel_skylib()
+    rules_nodejs()
+
+def rules_sass():
+    rules_sass_deps()
+    maybe(
+        git_repository,
+        name = "io_bazel_rules_sass",
+        remote = "https://github.com/bazelbuild/rules_sass.git",
+        commit = "8ccf4f1c351928b55d5dddf3672e3667f6978d60",
+    )
+
+def bazel():
+    maybe(
+        git_repository,
+        name = "io_bazel",
+        remote = "https://github.com/bazelbuild/bazel.git",
+        commit = "c689bf93917ad0efa8100b3a0fe1b43f1f1a1cdf",  # Mar 19, 2019
+    )
+
+def rules_cc():
+    maybe(
+        http_archive,
+        name = "io_bazel_rules_cc",
+        urls = ["https://github.com/bazelbuild/rules_cc/archive/236c6eb75ccf1e4ea9bed8d5e8ca3648a46536b7"],
+        sha256 = "1",
+    )
+
+
+def rules_python():
+    maybe(
+        git_repository,
+        name = "io_bazel_rules_python",
+        remote = "https://github.com/bazelbuild/rules_python.git",
+        commit = "fdbb17a4118a1728d19e638a5291b4c4266ea5b8",
+    )
+
+#########################################
+#               TODO                    #
+#########################################
+# TODO(fweikert): check dependencies and fetch them through the federation, too
+
+# TODO(fweikert): add all gazelle dependencies to the federation, even though that might cause problems because of go_repository rules.
+def gazelle():
+    rules_go()
+    maybe(
+        git_repository,
+        name = "bazel_gazelle",
+        commit = "aa1a9cfe4845bc83482af92addbfcd41f8dc51f0",  # master as of 2019-01-27
+        remote = "https://github.com/bazelbuild/bazel-gazelle",
+        shallow_since = "1548631399 -0500",
+    )
+
+def bazel_integration_testing():
+    maybe(
+        http_archive,
+        name = "build_bazel_integration_testing",
+        url = "https://github.com/bazelbuild/bazel-integration-testing/archive/13a7d5112aaae5572544c609f364d430962784b1.zip",
         type = "zip",
-        # commit from 2019-05-27
-        url = "https://github.com/bazelbuild/rules_scala/archive/300b4369a0a56d9e590d9fea8a73c3913d758e12.zip",
-        sha256 = "7f35ee7d96b22f6139b81da3a8ba5fb816e1803ed097f7295b85b7a56e4401c7",
+        strip_prefix = "bazel-integration-testing-13a7d5112aaae5572544c609f364d430962784b1",
+        sha256 = "8028ceaad3613404254d6b337f50dc52c0fe77522d0db897f093dd982c6e63ee",
     )
 
-def io_bazel_rules_rust():
-    bazel_skylib()
-    http_archive(
-        name = "io_bazel_rules_rust",
-        strip_prefix = "rules_rust-f32695dcd02d9a19e42b9eb7f29a24a8ceb2b858",
-        url = "https://github.com/bazelbuild/rules_rust/archive/f32695dcd02d9a19e42b9eb7f29a24a8ceb2b858.tar.gz",
-        sha256 = "ed0c81084bcc2bdcc98cfe56f384b20856840825f5e413e2b71809b61809fc87",
-    )
 
-def repositories():
-    bazel_skylib()
-    io_bazel_rules_go()
-    bazel_gazelle()
-    com_github_bazelbuild_buildtools()
-    io_bazel_rules_scala()
-    io_bazel_rules_rust()
+def bazel_toolchains():
+    maybe(
+        http_archive,
+        name = "bazel_toolchains",
+        sha256 = "5962fe677a43226c409316fcb321d668fc4b7fa97cb1f9ef45e7dc2676097b26",
+        strip_prefix = "bazel-toolchains-be10bee3010494721f08a0fccd7f57411a1e773e",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/bazel-toolchains/archive/be10bee3010494721f08a0fccd7f57411a1e773e.tar.gz",
+            "https://github.com/bazelbuild/bazel-toolchains/archive/be10bee3010494721f08a0fccd7f57411a1e773e.tar.gz",
+        ],
+    )

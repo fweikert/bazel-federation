@@ -1,0 +1,17 @@
+---
+tasks:
+  ubuntu1804:
+    build_targets:
+    - "@com_google_protobuf//..."
+    test_targets:
+    - "@com_google_protobuf//..."
+  macos:
+    build_targets:
+    - "@com_google_protobuf//..."
+    test_targets:
+    - "@com_google_protobuf//..."
+  windows:
+    build_targets:
+    - "@com_google_protobuf//..."
+    test_targets:
+    - "@com_google_protobuf//..."

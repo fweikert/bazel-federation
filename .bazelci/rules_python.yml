@@ -1,0 +1,17 @@
+---
+platforms:
+  ubuntu1604:
+    build_targets:
+    - "@io_bazel_rules_python//..."
+    test_targets:
+    - "@io_bazel_rules_python//..."
+  ubuntu1804:
+    build_targets:
+    - "@io_bazel_rules_python//..."
+    test_targets:
+    - "@io_bazel_rules_python//..."
+  macos:
+    build_targets:
+    - "@io_bazel_rules_python//..."
+    test_targets:
+    - "@io_bazel_rules_python//..."

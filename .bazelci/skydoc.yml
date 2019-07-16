@@ -1,0 +1,15 @@
+---
+default_platform: &default_platform
+  build_targets:
+  - "@io_bazel_skydoc//..."
+  test_targets:
+  - "@io_bazel_skydoc//..."
+platforms:
+  ubuntu1604:
+    <<: *default_platform
+  ubuntu1804:
+    <<: *default_platform
+  macos:
+    <<: *default_platform
+  windows:
+    <<: *default_platform
