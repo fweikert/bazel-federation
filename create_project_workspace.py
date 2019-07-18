@@ -40,12 +40,6 @@ load("//@{project}:{internal_deps_file}", "{internal_deps_function}")
 # TODO(fweikert): toolchain function?
 
 
-class Error(Exception):
-    """
-    Raised whenever something goes wrong and we should exit with an error.
-    """
-
-
 def eprint(msg):
     """
     Print to stderr and flush (just in case).
