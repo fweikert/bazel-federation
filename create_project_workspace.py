@@ -63,12 +63,12 @@ def get_remote_file_contents(http_url):
         return reader(resp).read()
 
 
-
 def set_up_project(project_name, workspace_content):
     os.mkdir(project_name)
     path = os.path.join(os.getcwd(), project_name, "WORKSPACE")
     with open(path, "w") as f: 
         f.write(workspace_content) 
+
 
 def main(argv=None):
     if argv is None:
