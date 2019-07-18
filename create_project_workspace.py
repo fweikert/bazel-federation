@@ -20,6 +20,7 @@ import os
 import os.path
 import sys
 import urllib.request
+import utils
 
 
 WORKSPACE_TEMPLATE = ("""workspace(name = "{project}_federation_example")
@@ -38,13 +39,6 @@ load("//@{project}:{internal_deps_file}", "{internal_deps_function}")
 
 """)
 # TODO(fweikert): toolchain function?
-
-
-def eprint(msg):
-    """
-    Print to stderr and flush (just in case).
-    """
-    print(msg, flush=True, file=sys.stderr)
 
 
 def create_new_workspace(project_name, internal_deps_file, internal_deps_function):
@@ -90,7 +84,7 @@ def main(argv=None):
 
         set_up_project(args.project, content)
     except Exception as ex:
-        eprint(ex)
+        utils.eprint(ex)
         return 1
 
     return 0
