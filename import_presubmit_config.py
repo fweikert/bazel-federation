@@ -88,11 +88,8 @@ def get_project_name_from_url(config_url):
 
 
 def load_config(http_url):
-    if http_url:
-        return load_remote_config(http_url)
+    return load_remote_config(http_url) if http_url else yaml.safe_load(CONFIG_TEMPLATE)
     
-    return yaml.safe_load(CONFIG_TEMPLATE)
-
 
 def load_remote_config(http_url):
     with urllib.request.urlopen(http_url) as resp:
