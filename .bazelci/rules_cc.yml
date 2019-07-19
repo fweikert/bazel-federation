@@ -1,45 +1,54 @@
----
 platforms:
-  ubuntu1604:
-    run_targets:
-    build_targets:
-    - "@io_bazel_rules_cc//..."
-    test_flags:
-    - "--test_timeout=300"
-    test_targets:
-    - "@io_bazel_rules_cc//..."
-  ubuntu1804:
-    run_targets:
-    build_targets:
-    - "@io_bazel_rules_cc//..."
-    test_flags:
-    - "--test_timeout=300"
-    test_targets:
-    - "@io_bazel_rules_cc//..."
-  ubuntu1804_nojava:
-    run_targets:
-    build_flags:
-    - "--javabase=@openjdk11_linux_archive//:runtime"
-    build_targets:
-    - "@io_bazel_rules_cc//..."
-    test_flags:
-    - "--test_timeout=300"
-    - "--javabase=@openjdk11_linux_archive//:runtime"
-    test_targets:
-    - "@io_bazel_rules_cc//..."
   macos:
-    run_targets:
     build_targets:
-    - "@io_bazel_rules_cc//..."
+    - '@rules_cc//...'
+    run_targets: null
+    setup:
+    - python3.7 create_project_workspace.py --project=rules_cc
     test_flags:
-    - "--test_timeout=300"
+    - --test_timeout=300
     test_targets:
-    - "@io_bazel_rules_cc//..."
+    - '@rules_cc//...'
+  ubuntu1604:
+    build_targets:
+    - '@rules_cc//...'
+    run_targets: null
+    setup:
+    - python3.6 create_project_workspace.py --project=rules_cc
+    test_flags:
+    - --test_timeout=300
+    test_targets:
+    - '@rules_cc//...'
+  ubuntu1804:
+    build_targets:
+    - '@rules_cc//...'
+    run_targets: null
+    setup:
+    - python3.6 create_project_workspace.py --project=rules_cc
+    test_flags:
+    - --test_timeout=300
+    test_targets:
+    - '@rules_cc//...'
+  ubuntu1804_nojava:
+    build_flags:
+    - --javabase=@openjdk11_linux_archive//:runtime
+    build_targets:
+    - '@rules_cc//...'
+    run_targets: null
+    setup:
+    - python3.6 create_project_workspace.py --project=rules_cc
+    test_flags:
+    - --test_timeout=300
+    - --javabase=@openjdk11_linux_archive//:runtime
+    test_targets:
+    - '@rules_cc//...'
   windows:
-    run_targets:
     build_targets:
-    - "@io_bazel_rules_cc//..."
+    - '@rules_cc//...'
+    run_targets: null
+    setup:
+    - python.exe create_project_workspace.py --project=rules_cc
     test_flags:
-    - "--test_timeout=300"
+    - --test_timeout=300
     test_targets:
-    - "@io_bazel_rules_cc//..."
+    - '@rules_cc//...'
