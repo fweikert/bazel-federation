@@ -1,17 +1,22 @@
----
 platforms:
-  ubuntu1604:
-    build_targets:
-    - "@io_bazel_rules_python//..."
-    test_targets:
-    - "@io_bazel_rules_python//..."
-  ubuntu1804:
-    build_targets:
-    - "@io_bazel_rules_python//..."
-    test_targets:
-    - "@io_bazel_rules_python//..."
   macos:
     build_targets:
-    - "@io_bazel_rules_python//..."
+    - '@rules_python//...'
+    setup:
+    - python3.7 create_project_workspace.py --project=rules_python
     test_targets:
-    - "@io_bazel_rules_python//..."
+    - '@rules_python//...'
+  ubuntu1604:
+    build_targets:
+    - '@rules_python//...'
+    setup:
+    - python3.6 create_project_workspace.py --project=rules_python
+    test_targets:
+    - '@rules_python//...'
+  ubuntu1804:
+    build_targets:
+    - '@rules_python//...'
+    setup:
+    - python3.6 create_project_workspace.py --project=rules_python
+    test_targets:
+    - '@rules_python//...'
