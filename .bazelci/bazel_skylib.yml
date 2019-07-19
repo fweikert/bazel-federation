@@ -1,36 +1,116 @@
----
-default_targets: &default_targets
-- "--"
-- "@bazel_skylib//..."
-- "-@bazel_skylib//tests/maprule/..."  # https://github.com/bazelbuild/bazel-skylib/issues/160
+buildifier: latest
 tasks:
-  ubuntu1804:
-    build_targets: *default_targets
+  macos_last_green:
+    bazel: last_green
     build_flags:
-    - "--incompatible_remap_main_repo"
-    test_targets: *default_targets
+    - --incompatible_remap_main_repo
+    build_targets:
+    - '@bazel_skylib//...'
+    name: Last Green Bazel
+    platform: macos
+    setup:
+    - python3.7 create_project_workspace.py --project=bazel_skylib
     test_flags:
-    - "--test_env=PATH"
-  ubuntu1604:
-    build_targets: *default_targets
+    - --test_env=PATH
+    test_targets:
+    - '@bazel_skylib//...'
+  macos_latest:
+    bazel: latest
     build_flags:
-    - "--incompatible_remap_main_repo"
-    test_targets: *default_targets
+    - --incompatible_remap_main_repo
+    build_targets:
+    - '@bazel_skylib//...'
+    name: Latest Bazel
+    platform: macos
+    setup:
+    - python3.7 create_project_workspace.py --project=bazel_skylib
     test_flags:
-    - "--test_env=PATH"
-  macos:
-    build_targets: *default_targets
+    - --test_env=PATH
+    test_targets:
+    - '@bazel_skylib//...'
+  ubuntu1604_last_green:
+    bazel: last_green
     build_flags:
-    - "--incompatible_remap_main_repo"
-    test_targets: *default_targets
+    - --incompatible_remap_main_repo
+    build_targets:
+    - '@bazel_skylib//...'
+    name: Last Green Bazel
+    platform: ubuntu1604
+    setup:
+    - python3.6 create_project_workspace.py --project=bazel_skylib
     test_flags:
-    - "--test_env=PATH"
-  windows:
-    build_targets: *default_targets
+    - --test_env=PATH
+    test_targets:
+    - '@bazel_skylib//...'
+  ubuntu1604_latest:
+    bazel: latest
     build_flags:
-    - "--incompatible_remap_main_repo"
-    test_targets: *default_targets
+    - --incompatible_remap_main_repo
+    build_targets:
+    - '@bazel_skylib//...'
+    name: Latest Bazel
+    platform: ubuntu1604
+    setup:
+    - python3.6 create_project_workspace.py --project=bazel_skylib
     test_flags:
-    # TODO(laszlocsomor): remove "--test_env=LOCALAPPDATA" after
-    # https://github.com/bazelbuild/bazel/issues/7761 is fixed
-    - "--test_env=LOCALAPPDATA"
+    - --test_env=PATH
+    test_targets:
+    - '@bazel_skylib//...'
+  ubuntu1804_last_green:
+    bazel: last_green
+    build_flags:
+    - --incompatible_remap_main_repo
+    build_targets:
+    - '@bazel_skylib//...'
+    name: Last Green Bazel
+    platform: ubuntu1804
+    setup:
+    - python3.6 create_project_workspace.py --project=bazel_skylib
+    test_flags:
+    - --test_env=PATH
+    test_targets:
+    - '@bazel_skylib//...'
+  ubuntu1804_latest:
+    bazel: latest
+    build_flags:
+    - --incompatible_remap_main_repo
+    build_targets:
+    - '@bazel_skylib//...'
+    name: Latest Bazel
+    platform: ubuntu1804
+    setup:
+    - python3.6 create_project_workspace.py --project=bazel_skylib
+    test_flags:
+    - --test_env=PATH
+    test_targets:
+    - '@bazel_skylib//...'
+  windows_last_green:
+    bazel: last_green
+    build_flags:
+    - --incompatible_remap_main_repo
+    build_targets:
+    - '@bazel_skylib//...'
+    name: Last Green Bazel
+    platform: windows
+    setup:
+    - python.exe create_project_workspace.py --project=bazel_skylib
+    test_flags:
+    - --test_env=LOCALAPPDATA
+    test_targets:
+    - --
+    - '@bazel_skylib//...'
+  windows_latest:
+    bazel: latest
+    build_flags:
+    - --incompatible_remap_main_repo
+    build_targets:
+    - '@bazel_skylib//...'
+    name: Latest Bazel
+    platform: windows
+    setup:
+    - python.exe create_project_workspace.py --project=bazel_skylib
+    test_flags:
+    - --test_env=LOCALAPPDATA
+    test_targets:
+    - --
+    - '@bazel_skylib//...'
