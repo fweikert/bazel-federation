@@ -1,79 +1,113 @@
----
-bazel: 0.26.0
-platforms:
-  ubuntu1604:
-    run_targets:
-    - "@nodejs//:yarn"
-    - "@rules_nodejs//internal/node/test:no_deps"
-    - "@rules_nodejs//internal/node/test:has_deps_legacy"
-    - "@rules_nodejs//internal/node/test:has_deps"
-    - "@rules_nodejs//internal/node/test:has_deps_hybrid"
-    - "@rules_nodejs//internal/e2e/fine_grained_no_bin:index"
-    - "@fine_grained_deps_yarn//typescript/bin:tsc"
-    - "@bazel_workspace_a//:bin"
-    - "@bazel_workspace_a//subdir:bin"
-    - "@bazel_workspace_b//:bin"
-    - "@bazel_workspace_b//subdir:bin"
-    build_targets:
-    - "@rules_nodejs//..."
-    test_targets:
-    - "@rules_nodejs//..."
-  ubuntu1804:
-    run_targets:
-    - "@nodejs//:yarn"
-    - "@rules_nodejs//internal/node/test:no_deps"
-    - "@rules_nodejs//internal/node/test:has_deps_legacy"
-    - "@rules_nodejs//internal/node/test:has_deps"
-    - "@rules_nodejs//internal/node/test:has_deps_hybrid"
-    - "@rules_nodejs//internal/e2e/fine_grained_no_bin:index"
-    - "@fine_grained_deps_yarn//typescript/bin:tsc"
-    - "@bazel_workspace_a//:bin"
-    - "@bazel_workspace_a//subdir:bin"
-    - "@bazel_workspace_b//:bin"
-    - "@bazel_workspace_b//subdir:bin"
-    build_targets:
-    - "@rules_nodejs//..."
-    # This target is tagged "manual" but we want some CI
-    # coverage of it to make sure it doesn't break.
-    - "@rules_nodejs//docs"
-    test_targets:
-    - "@rules_nodejs//..."
+tasks:
   macos:
-    run_targets:
-    - "@nodejs//:yarn"
-    - "@rules_nodejs//internal/node/test:no_deps"
-    - "@rules_nodejs//internal/node/test:has_deps_legacy"
-    - "@rules_nodejs//internal/node/test:has_deps"
-    - "@rules_nodejs//internal/node/test:has_deps_hybrid"
-    - "@rules_nodejs//internal/e2e/fine_grained_no_bin:index"
-    - "@fine_grained_deps_yarn//typescript/bin:tsc"
-    - "@bazel_workspace_a//:bin"
-    - "@bazel_workspace_a//subdir:bin"
-    - "@bazel_workspace_b//:bin"
-    - "@bazel_workspace_b//subdir:bin"
     build_targets:
-    - "@rules_nodejs//..."
-    test_targets:
-    - "@rules_nodejs//..."
-  windows:
+    - '@rules_nodejs//...'
+    name: macos
+    platform: macos
     run_targets:
-    - "@nodejs//:yarn"
-    - "@rules_nodejs//internal/node/test:no_deps"
-    - "@rules_nodejs//internal/node/test:has_deps_legacy"
-    - "@rules_nodejs//internal/node/test:has_deps"
-    - "@rules_nodejs//internal/node/test:has_deps_hybrid"
-    - "@rules_nodejs//internal/e2e/fine_grained_no_bin:index"
-    - "@fine_grained_deps_yarn//typescript/bin:tsc"
-    - "@bazel_workspace_a//:bin"
-    - "@bazel_workspace_a//subdir:bin"
-    - "@bazel_workspace_b//:bin"
-    - "@bazel_workspace_b//subdir:bin"
-    build_targets:
-    - "@rules_nodejs//..."
-    test_flags:
-    - "--test_tag_filters=-fix-windows"
+    - '@nodejs//:yarn'
+    - '@rules_nodejs//internal/node/test:no_deps'
+    - '@rules_nodejs//internal/node/test:has_deps_legacy'
+    - '@rules_nodejs//internal/node/test:has_deps'
+    - '@rules_nodejs//internal/node/test:has_deps_hybrid'
+    - '@rules_nodejs//internal/e2e/fine_grained_no_bin:index'
+    - '@fine_grained_deps_yarn//typescript/bin:tsc'
+    - '@bazel_workspace_a//:bin'
+    - '@bazel_workspace_a//subdir:bin'
+    - '@bazel_workspace_b//:bin'
+    - '@bazel_workspace_b//subdir:bin'
+    setup:
+    - python3.7 create_project_workspace.py --project=rules_nodejs
     test_targets:
-    - "@rules_nodejs//..."
+    - '@rules_nodejs//...'
+  macos_cross_compile:
+    build_flags:
+    - --platforms=@build_bazel_rules_nodejs//toolchains/node:linux_amd64
+    build_targets:
+    - '@rules_nodejs//...'
+    name: macos_cross_compile
+    platform: macos
+    setup:
+    - python3.7 create_project_workspace.py --project=rules_nodejs
   rbe_ubuntu1604:
     build_targets:
-    - "@rules_nodejs//..."
+    - '@rules_nodejs//...'
+    name: rbe_ubuntu1604
+    platform: rbe_ubuntu1604
+    setup:
+    - python3.6 create_project_workspace.py --project=rules_nodejs
+  ubuntu1604:
+    build_targets:
+    - '@rules_nodejs//...'
+    name: ubuntu1604
+    platform: ubuntu1604
+    run_targets:
+    - '@nodejs//:yarn'
+    - '@rules_nodejs//internal/node/test:no_deps'
+    - '@rules_nodejs//internal/node/test:has_deps_legacy'
+    - '@rules_nodejs//internal/node/test:has_deps'
+    - '@rules_nodejs//internal/node/test:has_deps_hybrid'
+    - '@rules_nodejs//internal/e2e/fine_grained_no_bin:index'
+    - '@fine_grained_deps_yarn//typescript/bin:tsc'
+    - '@bazel_workspace_a//:bin'
+    - '@bazel_workspace_a//subdir:bin'
+    - '@bazel_workspace_b//:bin'
+    - '@bazel_workspace_b//subdir:bin'
+    setup:
+    - python3.6 create_project_workspace.py --project=rules_nodejs
+    test_targets:
+    - '@rules_nodejs//...'
+  ubuntu1804:
+    build_targets:
+    - '@rules_nodejs//...'
+    - '@rules_nodejs//docs'
+    name: ubuntu1804
+    platform: ubuntu1804
+    run_targets:
+    - '@nodejs//:yarn'
+    - '@rules_nodejs//internal/node/test:no_deps'
+    - '@rules_nodejs//internal/node/test:has_deps_legacy'
+    - '@rules_nodejs//internal/node/test:has_deps'
+    - '@rules_nodejs//internal/node/test:has_deps_hybrid'
+    - '@rules_nodejs//internal/e2e/fine_grained_no_bin:index'
+    - '@fine_grained_deps_yarn//typescript/bin:tsc'
+    - '@bazel_workspace_a//:bin'
+    - '@bazel_workspace_a//subdir:bin'
+    - '@bazel_workspace_b//:bin'
+    - '@bazel_workspace_b//subdir:bin'
+    setup:
+    - python3.6 create_project_workspace.py --project=rules_nodejs
+    test_targets:
+    - '@rules_nodejs//...'
+  windows:
+    build_targets:
+    - '@rules_nodejs//...'
+    name: windows
+    platform: windows
+    run_targets:
+    - '@nodejs//:yarn'
+    - '@rules_nodejs//internal/node/test:no_deps'
+    - '@rules_nodejs//internal/node/test:has_deps_legacy'
+    - '@rules_nodejs//internal/node/test:has_deps'
+    - '@rules_nodejs//internal/node/test:has_deps_hybrid'
+    - '@rules_nodejs//internal/e2e/fine_grained_no_bin:index'
+    - '@fine_grained_deps_yarn//typescript/bin:tsc'
+    - '@bazel_workspace_a//:bin'
+    - '@bazel_workspace_a//subdir:bin'
+    - '@bazel_workspace_b//:bin'
+    - '@bazel_workspace_b//subdir:bin'
+    setup:
+    - python.exe create_project_workspace.py --project=rules_nodejs
+    test_flags:
+    - --test_tag_filters=-fix-windows
+    test_targets:
+    - '@rules_nodejs//...'
+  windows_cross_compile:
+    build_flags:
+    - --platforms=@build_bazel_rules_nodejs//toolchains/node:linux_amd64
+    build_targets:
+    - '@rules_nodejs//...'
+    name: windows_cross_compile
+    platform: windows
+    setup:
+    - python.exe create_project_workspace.py --project=rules_nodejs
