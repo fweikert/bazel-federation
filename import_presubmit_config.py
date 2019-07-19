@@ -105,8 +105,9 @@ def transform_config(project_name, config):
             % (get_python_version_for_task(name, task_config), project_name)
         ]
         for field in ("run_targets", "build_targets", "test_targets"):
-            if field in task_config:
-                task_config[field] = transform_all_targets(project_name, task_config[field])
+            targets = task_config.get(field)
+            if targets:
+                task_config[field] = transform_all_targets(project_name, targets)
 
     return config
 
