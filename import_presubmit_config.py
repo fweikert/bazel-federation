@@ -16,6 +16,7 @@
 
 import argparse
 import codecs
+import os
 import re
 import sys
 import urllib.request
@@ -33,6 +34,8 @@ PYTHON_VERSIONS = {
 DEFAULT_PYTHON_VERSION = "python3.6"
 
 PROJECT_REGEX = re.compile(r"bazelbuild/([^/]+)/")
+
+MASTER_CONFIG_FILE = ".bazelci/presubmit.yml"
 
 
 class Error(Exception):
@@ -97,10 +100,32 @@ def transform_target(project_name, target):
     return "{}@{}{}{}".format(exclusion_prefix, project_name, slashes, target)
 
 
-def write_config(project_name, config):
-    path = "%s.yml" % project_name
+def update_master_config(project_name):
+    master_config = load_master_config()
+    if "imports" not in master_config:
+        raise Error("Master presubmit configuration at '%s' does not contain any 'imports'" % MASTER_CONFIG_FILE)
+
+    config_name = "%s.yml" % project_name
+    if config_name in master_config["imports"]:
+        return
+
+    master_config["imports"].append(config_name)
+    master_config["imports"] = sorted(master_config["imports"])
+
+    file_name = os.path.basename(MASTER_CONFIG_FILE)
+    save_config_file(file_name, master_config)
+
+
+def load_master_config():
+    with open(MASTER_CONFIG_FILE, "r") as fd:
+        return yaml.safe_load(fd)
+
+
+def save_config_file(file_name, config):
+    directory = os.path.dirname(MASTER_CONFIG_FILE)
+    path = os.path.join(directory, file_name)
     with open(path, "w") as f:
-        f.write(yaml.dump(config))
+        f.write(yaml.dump(config, default_flow_style=False))
 
 
 def main(argv=None):
@@ -118,7 +143,8 @@ def main(argv=None):
     try:
         project_name = args.project or get_project_name_from_url(args.config_url)
         config = transform_config(project_name, load_config(args.config_url))
-        write_config(project_name, config)
+        update_master_config(project_name)
+        save_config_file("%s.yml" % project_name, config)
     except Exception as ex:
         utils.eprint(ex)
         return 1
