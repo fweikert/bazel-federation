@@ -1,17 +1,24 @@
----
 platforms:
-  ubuntu1604:
-    test_targets:
-    - "@com_github_bazelbuild_buildtools//:tests"
-  ubuntu1804:
-    test_targets:
-    - "@com_github_bazelbuild_buildtools//:tests"
   macos:
+    setup:
+    - python3.7 create_project_workspace.py --project=buildtools
     test_targets:
-    - "@com_github_bazelbuild_buildtools//:tests"
+    - '@buildtools//:tests'
+  ubuntu1604:
+    setup:
+    - python3.6 create_project_workspace.py --project=buildtools
+    test_targets:
+    - '@buildtools//:tests'
+  ubuntu1804:
+    setup:
+    - python3.6 create_project_workspace.py --project=buildtools
+    test_targets:
+    - '@buildtools//:tests'
   windows:
+    setup:
+    - python.exe create_project_workspace.py --project=buildtools
     test_flags:
-    - "--enable_runfiles"
+    - --enable_runfiles
     test_targets:
-    - "--"
-    - "@com_github_bazelbuild_buildtools//:tests"
+    - --
+    - '@buildtools//:tests'
