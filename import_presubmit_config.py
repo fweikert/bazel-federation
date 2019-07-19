@@ -21,6 +21,7 @@ import re
 import sys
 import urllib.request
 import utils
+import traceback
 import yaml
 
 # TODO(fweikert): keep this list in sync with PLATFORMS in https://github.com/bazelbuild/continuous-integration/blob/master/buildkite/bazelci.py
@@ -197,7 +198,7 @@ def main(argv=None):
         update_master_config(project_name)
         save_config_file("%s.yml" % project_name, config)
     except Exception as ex:
-        utils.eprint(ex)
+        utils.eprint("".join(traceback.format_exception(None, ex, ex.__traceback__)))
         return 1
 
     return 0
