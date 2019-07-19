@@ -25,11 +25,7 @@ import yaml
 
 # TODO(fweikert): keep this list in sync with PLATFORMS in https://github.com/bazelbuild/continuous-integration/blob/master/buildkite/bazelci.py
 # (or find a better solution)
-PYTHON_VERSIONS = {
-    "debian10":         "python3.7",
-    "macos":  "python3.7",
-    "windows":  "python.exe",
-}
+PYTHON_VERSIONS = {"debian10": "python3.7", "macos": "python3.7", "windows": "python.exe"}
 
 DEFAULT_PYTHON_VERSION = "python3.6"
 
@@ -83,13 +79,16 @@ def str_presenter(dumper, data):
 def get_project_name_from_url(config_url):
     match = PROJECT_REGEX.search(config_url)
     if not match:
-        raise Error("Config URL '%s' does not point to a file in the bazelbuild GitHub organisation." % config_url)
+        raise Error(
+            "Config URL '%s' does not point to a file in the bazelbuild GitHub organisation."
+            % config_url
+        )
     return match.group(1)
 
 
 def load_config(http_url):
     return load_remote_config(http_url) if http_url else yaml.safe_load(CONFIG_TEMPLATE)
-    
+
 
 def load_remote_config(http_url):
     with urllib.request.urlopen(http_url) as resp:
@@ -100,7 +99,10 @@ def load_remote_config(http_url):
 def transform_config(project_name, config):
     tasks = config.get("tasks") or config.get("platforms")
     for name, task_config in tasks.items():
-        task_config["setup"] = ['%s create_project_workspace.py --project=%s' % (get_python_version_for_task(name, task_config), project_name)]
+        task_config["setup"] = [
+            "%s create_project_workspace.py --project=%s"
+            % (get_python_version_for_task(name, task_config), project_name)
+        ]
         for field in ("run_targets", "build_targets", "test_targets"):
             if field in task_config:
                 task_config[field] = transform_all_targets(project_name, task_config[field])
@@ -120,7 +122,7 @@ def transform_all_targets(project_name, targets):
 def transform_target(project_name, target):
     if target == "--" or target.startswith("@"):
         return target
-    
+
     exclusion_prefix = ""
     if target.startswith("-"):
         exclusion_prefix = "-"
@@ -133,7 +135,10 @@ def transform_target(project_name, target):
 def update_master_config(project_name):
     master_config = load_master_config()
     if "imports" not in master_config:
-        raise Error("Master presubmit configuration at '%s' does not contain any 'imports'" % MASTER_CONFIG_FILE)
+        raise Error(
+            "Master presubmit configuration at '%s' does not contain any 'imports'"
+            % MASTER_CONFIG_FILE
+        )
 
     config_name = "%s.yml" % project_name
     if config_name in master_config["imports"]:
@@ -164,9 +169,22 @@ def main(argv=None):
 
     yaml.add_representer(str, str_presenter)
 
-    parser = argparse.ArgumentParser(description="Bazel Federation CI Configuration Generation Script")
-    parser.add_argument("--config_url", type=str, help="URL of the presubmit configuration that should act as template. If None, a default configuration will be used instead.")
-    parser.add_argument("--project", type=str, help="Name of the project that should be used as remote repository prefix in the new config. This flag can be omitted if --config_url points to a file in the bazelbuild GitHub organisation and if the repository name of that config file should be used as project name.")
+    parser = argparse.ArgumentParser(
+        description="Bazel Federation CI Configuration Generation Script"
+    )
+    parser.add_argument(
+        "--config_url",
+        type=str,
+        help="URL of the presubmit configuration that should act as template. "
+        "If None, a default configuration will be used instead.",
+    )
+    parser.add_argument(
+        "--project",
+        type=str,
+        help="Name of the project that should be used as remote repository prefix in the new config. "
+        "This flag can be omitted if --config_url points to a file in the bazelbuild GitHub organisation "
+        "and if the repository name of that config file should be used as project name.",
+    )
 
     args = parser.parse_args(argv)
     if not args.project and not args.config_url:
@@ -187,8 +205,4 @@ def main(argv=None):
 
 if __name__ == "__main__":
     sys.exit(main())
-
-
-
-
 
