@@ -1,15 +1,30 @@
----
-default_platform: &default_platform
-  build_targets:
-  - "@io_bazel_skydoc//..."
-  test_targets:
-  - "@io_bazel_skydoc//..."
+buildifier: latest
 platforms:
-  ubuntu1604:
-    <<: *default_platform
-  ubuntu1804:
-    <<: *default_platform
   macos:
-    <<: *default_platform
+    build_targets:
+    - '@skydoc//...'
+    setup:
+    - python3.7 create_project_workspace.py --project=skydoc
+    test_targets:
+    - '@skydoc//...'
+  ubuntu1604:
+    build_targets:
+    - '@skydoc//...'
+    setup:
+    - python3.6 create_project_workspace.py --project=skydoc
+    test_targets:
+    - '@skydoc//...'
+  ubuntu1804:
+    build_targets:
+    - '@skydoc//...'
+    setup:
+    - python3.6 create_project_workspace.py --project=skydoc
+    test_targets:
+    - '@skydoc//...'
   windows:
-    <<: *default_platform
+    build_targets:
+    - '@skydoc//...'
+    setup:
+    - python.exe create_project_workspace.py --project=skydoc
+    test_targets:
+    - '@skydoc//...'
