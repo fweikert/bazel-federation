@@ -38,6 +38,32 @@ PROJECT_REGEX = re.compile(r"bazelbuild/([^/]+)/")
 MASTER_CONFIG_FILE = ".bazelci/presubmit.yml"
 
 
+CONFIG_TEMPLATE = """
+---
+tasks:
+  ubuntu1604:
+    build_targets:
+    - "..."
+    test_targets:
+    - "..."
+  ubuntu1804:
+    build_targets:
+    - "..."
+    test_targets:
+    - "..."
+  macos:
+    build_targets:
+    - "..."
+    test_targets:
+    - "..."
+  windows:
+    build_targets:
+    - "..."
+    test_targets:
+    - "..."
+"""
+
+
 class Error(Exception):
     """Base error class for this module.
 
@@ -62,6 +88,13 @@ def get_project_name_from_url(config_url):
 
 
 def load_config(http_url):
+    if http_url:
+        return load_remote_config(http_url)
+    
+    return yaml.safe_load(CONFIG_TEMPLATE)
+
+
+def load_remote_config(http_url):
     with urllib.request.urlopen(http_url) as resp:
         reader = codecs.getreader("utf-8")
         return yaml.safe_load(reader(resp))
@@ -135,10 +168,13 @@ def main(argv=None):
     yaml.add_representer(str, str_presenter)
 
     parser = argparse.ArgumentParser(description="Bazel Federation CI Configuration Generation Script")
-    parser.add_argument("--config_url", type=str, required=True)
+    parser.add_argument("--config_url", type=str, help="URL of the presubmit configuration that should act as template. If None, a default configuration will be used instead.")
     parser.add_argument("--project", type=str, help="Name of the project that should be used as remote repository prefix in the new config. This flag can be omitted if --config_url points to a file in the bazelbuild GitHub organisation and if the repository name of that config file should be used as project name.")
 
     args = parser.parse_args(argv)
+    if not args.project and not args.config_url:
+        utils.eprint("At least one of --project and --config_url must be set.")
+        return 1
 
     try:
         project_name = args.project or get_project_name_from_url(args.config_url)
