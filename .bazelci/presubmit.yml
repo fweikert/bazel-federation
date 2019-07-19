@@ -4,7 +4,6 @@ imports:
   - buildtools.yml
   - protobuf.yml
   - rules_cc.yml
-  - rules_go.yml
   - rules_nodejs.yml
   - rules_python.yml
   - rules_sass.yml
