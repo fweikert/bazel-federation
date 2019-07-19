@@ -23,7 +23,7 @@ import urllib.request
 import utils
 
 
-WORKSPACE_TEMPLATE = ("""workspace(name = "{project}_federation_example")
+WORKSPACE_TEMPLATE = """workspace(name = "{project}_federation_example")
 
 local_repository(name = "bazel_federation",
                  path = "..",
@@ -37,12 +37,17 @@ load("//@{project}:{internal_deps_file}", "{internal_deps_function}")
 
 {internal_deps_function}()
 
-""")
+"""
 # TODO(fweikert): toolchain function?
 
 
 def create_new_workspace(project_name, internal_deps_file, internal_deps_function):
-    return WORKSPACE_TEMPLATE.format(project=project_name, internal_deps_file=internal_deps_file, internal_deps_function=internal_deps_function)
+    return WORKSPACE_TEMPLATE.format(
+        project=project_name,
+        internal_deps_file=internal_deps_file,
+        internal_deps_function=internal_deps_function,
+    )
+
 
 def transform_existing_workspace(project_name, src_url):
     # 1. Transform workspace name
@@ -60,8 +65,8 @@ def get_remote_file_contents(http_url):
 def set_up_project(project_name, workspace_content):
     os.mkdir(project_name)
     path = os.path.join(os.getcwd(), project_name, "WORKSPACE")
-    with open(path, "w") as f: 
-        f.write(workspace_content) 
+    with open(path, "w") as f:
+        f.write(workspace_content)
 
 
 def main(argv=None):
@@ -80,7 +85,9 @@ def main(argv=None):
         if args.workspace_src_url:
             content = transform_existing_workspace(args.project, args.workspace_src_url)
         else:
-            content = create_new_workspace(args.project, args.internal_deps_file, args.internal_deps_function)
+            content = create_new_workspace(
+                args.project, args.internal_deps_file, args.internal_deps_function
+            )
 
         set_up_project(args.project, content)
     except Exception as ex:
