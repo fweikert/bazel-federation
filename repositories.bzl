@@ -6,12 +6,13 @@ load("//:third_party_repos.bzl", "zlib", "org_golang_x_tools", "org_golang_x_sys
 # Repositories in this file have been tested with Bazel 0.26.0.
 
 def bazel_skylib():
+    # TODO: point to original repository (was bazel-skylib-0.8.0)
     maybe(
         http_archive,
         name = "bazel_skylib",
-        url = "https://github.com/bazelbuild/bazel-skylib/archive/0.8.0.tar.gz",
-        sha256 = "2ea8a5ed2b448baf4a6855d3ce049c4c452a6470b1efd1504fdb7c1c134d220a",
-        strip_prefix = "bazel-skylib-0.8.0",
+        url = "https://github.com/fweikert/bazel-skylib/archive/0.9.0-fedv2.tar.gz",
+        sha256 = "fa563fb9bec2b1b46286e516448806c17769d85c7bea20ed37cf7488cb5c26c7",
+        strip_prefix = "bazel-skylib-0.9.0-fedv2",
     )
 
 # TODO(fweikert): delete this function if it's not needed by the protobuf project itself.
