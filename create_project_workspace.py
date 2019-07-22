@@ -33,19 +33,19 @@ load("@bazel_federation//:repositories.bzl", "{project}")
 
 {project}()
 
-load("//@{project}:{internal_deps_file}", "{internal_deps_function}")	
+load("//@{project}:{internal_deps_file}", "{project}_{internal_deps_function_suffix}")
 
-{internal_deps_function}()
+{project}_{internal_deps_function_suffix}()
 
 """
 # TODO(fweikert): toolchain function?
 
 
-def create_new_workspace(project_name, internal_deps_file, internal_deps_function):
+def create_new_workspace(project_name, internal_deps_file, internal_deps_function_suffix):
     return WORKSPACE_TEMPLATE.format(
         project=project_name,
         internal_deps_file=internal_deps_file,
-        internal_deps_function=internal_deps_function,
+        internal_deps_function_suffix=internal_deps_function_suffix,
     )
 
 
@@ -76,7 +76,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Bazel Federation WORKSPACE Generation Script")
     parser.add_argument("--project", type=str, required=True)
     parser.add_argument("--internal_deps_file", type=str, default="internal_deps.bzl")
-    parser.add_argument("--internal_deps_function", type=str, default="internal_deps")
+    parser.add_argument("--internal_deps_function_suffix", type=str, default="internal_deps")
     parser.add_argument("--workspace_src_url", type=str)
 
     args = parser.parse_args(argv)
@@ -86,7 +86,7 @@ def main(argv=None):
             content = transform_existing_workspace(args.project, args.workspace_src_url)
         else:
             content = create_new_workspace(
-                args.project, args.internal_deps_file, args.internal_deps_function
+                args.project, args.internal_deps_file, args.internal_deps_function_suffix
             )
 
         set_up_project(args.project, content)
