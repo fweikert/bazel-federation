@@ -33,7 +33,7 @@ load("@bazel_federation//:repositories.bzl", "{project}")
 
 {project}()
 
-load("//@{project}:{internal_deps_file}", "{project}_{internal_deps_function_suffix}")
+load("@{project}://{internal_deps_file}", "{project}_{internal_deps_function_suffix}")
 
 {project}_{internal_deps_function_suffix}()
 
