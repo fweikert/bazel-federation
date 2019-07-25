@@ -3,8 +3,8 @@ imports:
 - build_bazel_rules_nodejs.yml
 - buildtools.yml
 - io_bazel_rules_sass.yml
+- io_bazel_skydoc.yml
 - protobuf.yml
 - rules_cc.yml
 - rules_java.yml
 - rules_python.yml
-- skydoc.yml
