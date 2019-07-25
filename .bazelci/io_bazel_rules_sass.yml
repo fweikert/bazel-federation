@@ -1,0 +1,32 @@
+platforms:
+  macos:
+    build_targets:
+    - '@io_bazel_rules_sass//...'
+    setup:
+    - python3.7 create_project_workspace.py --project=io_bazel_rules_sass
+    test_targets:
+    - '@io_bazel_rules_sass//...'
+  ubuntu1604:
+    build_targets:
+    - '@io_bazel_rules_sass//...'
+    setup:
+    - python3.6 create_project_workspace.py --project=io_bazel_rules_sass
+    test_targets:
+    - '@io_bazel_rules_sass//...'
+  ubuntu1804:
+    build_targets:
+    - '@io_bazel_rules_sass//...'
+    setup:
+    - python3.6 create_project_workspace.py --project=io_bazel_rules_sass
+    test_targets:
+    - '@io_bazel_rules_sass//...'
+  windows:
+    build_targets:
+    - --
+    - '@io_bazel_rules_sass//...'
+    - -@io_bazel_rules_sass//sass/docs
+    setup:
+    - python.exe create_project_workspace.py --project=io_bazel_rules_sass
+    test_targets:
+    - --
+    - '@io_bazel_rules_sass//...'
