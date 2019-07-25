@@ -1,10 +1,10 @@
 imports:
 - bazel_skylib.yml
+- build_bazel_rules_nodejs.yml
 - buildtools.yml
 - io_bazel_rules_sass.yml
 - protobuf.yml
 - rules_cc.yml
 - rules_java.yml
-- rules_nodejs.yml
 - rules_python.yml
 - skydoc.yml
