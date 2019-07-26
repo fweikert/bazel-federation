@@ -6,7 +6,7 @@ tasks:
     build_targets:
     - '@bazel_skylib//...'
     setup:
-    - python3.7 create_project_workspace.py --project=bazel_skylib
+    - python3.7 create_project_workspace.py --project=bazel_skylib --workspace_url=https://raw.githubusercontent.com/fweikert/bazel-skylib/master/WORKSPACE
     test_flags:
     - --test_env=PATH
     test_targets:
@@ -17,7 +17,7 @@ tasks:
     build_targets:
     - '@bazel_skylib//...'
     setup:
-    - python3.6 create_project_workspace.py --project=bazel_skylib
+    - python3.6 create_project_workspace.py --project=bazel_skylib --workspace_url=https://raw.githubusercontent.com/fweikert/bazel-skylib/master/WORKSPACE
     test_flags:
     - --test_env=PATH
     test_targets:
@@ -28,7 +28,7 @@ tasks:
     build_targets:
     - '@bazel_skylib//...'
     setup:
-    - python3.6 create_project_workspace.py --project=bazel_skylib
+    - python3.6 create_project_workspace.py --project=bazel_skylib --workspace_url=https://raw.githubusercontent.com/fweikert/bazel-skylib/master/WORKSPACE
     test_flags:
     - --test_env=PATH
     test_targets:
@@ -39,7 +39,7 @@ tasks:
     build_targets:
     - '@bazel_skylib//...'
     setup:
-    - python.exe create_project_workspace.py --project=bazel_skylib
+    - python.exe create_project_workspace.py --project=bazel_skylib --workspace_url=https://raw.githubusercontent.com/fweikert/bazel-skylib/master/WORKSPACE
     test_flags:
     - --test_env=LOCALAPPDATA
     test_targets:
