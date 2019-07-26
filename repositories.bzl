@@ -5,7 +5,11 @@ load("//:third_party_repos.bzl", "zlib", "org_golang_x_tools", "org_golang_x_sys
 
 # Repositories in this file have been tested with Bazel 0.26.0.
 
+def bazel_skylib_deps():
+    pass
+
 def bazel_skylib():
+    bazel_skylib_deps()
     # TODO: point to original repository (was bazel-skylib-0.8.0)
     maybe(
         http_archive,
