@@ -18,16 +18,20 @@ import argparse
 import codecs
 import os
 import os.path
+import re
 import sys
 import urllib.request
 import utils
 
 
+LOCAL_FEDERATION_TEMPLATE = """local_repository(
+    name = "bazel_federation",
+    path = "..",
+)"""
+
 WORKSPACE_TEMPLATE = """workspace(name = "{project}_federation_example")
 
-local_repository(name = "bazel_federation",
-                 path = "..",
-)
+%s
 
 load("@bazel_federation//:repositories.bzl", "{project}")
 
@@ -36,9 +40,10 @@ load("@bazel_federation//:repositories.bzl", "{project}")
 load("@{project}//:{internal_deps_file}", "{project}_{internal_deps_function_suffix}")
 
 {project}_{internal_deps_function_suffix}()
-
-"""
+""" % LOCAL_FEDERATION_TEMPLATE
 # TODO(fweikert): toolchain function?
+
+LOAD_REGEX = re.compile(r'^(load\(")([^@]{2})')
 
 
 def create_new_workspace(project_name, internal_deps_file, internal_deps_function_suffix):
@@ -49,11 +54,15 @@ def create_new_workspace(project_name, internal_deps_file, internal_deps_functio
     )
 
 
-def transform_existing_workspace(project_name, src_url):
-    # 1. Transform workspace name
-    # 2. Replace bazel-federation repo with local_repository
-    # 3. Prefix internal deps bzl file target with @project_name
-    raise NotImplementedError("soon (tm)")
+def transform_existing_workspace(project_name, workspace_url):
+    template = get_remote_file_contents(workspace_url)
+    lines = template.split("\n")
+
+    # Prefix internal deps bzl file target with @project_name
+    sub_func = create_load_sub_func(project_name)
+    lines = [LOAD_REGEX.sub(sub_func, l) for l in lines]
+    lines = replace_federation_repo(lines)
+    return "\n".join(lines)
 
 
 def get_remote_file_contents(http_url):
@@ -61,6 +70,42 @@ def get_remote_file_contents(http_url):
         reader = codecs.getreader("utf-8")
         return reader(resp).read()
 
+
+def create_load_sub_func(project_name):
+
+    def modify_load_statement(match):
+        load = match.group(1)
+        text = match.group(2)
+        prefix = "" if text.startswith("//") else "//"
+        return "%s@%s%s%s" % (load, project_name, prefix, text)
+
+    return modify_load_statement
+
+
+def replace_federation_repo(lines):
+    # TODO(fweikert): replace this very basic algorithm that fails
+    # 1. If bazel-federation is not a git_repository
+    # 2. If there are multiple git repositories in the file
+    # 3. If the file isn't formatted properly
+    start = find_repo_start(lines)
+    end = find_repo_end(lines, start)
+    if start is None or end is None:
+        raise Exception("TODO: improve this algorithm since start=%s, end=%s", start, end)
+
+    return lines[:start] + [LOCAL_FEDERATION_TEMPLATE] + lines[end+1:]
+
+
+def find_repo_start(lines):
+    for pos, line in enumerate(lines):
+        if line.startswith("git_repository"):
+            return pos
+
+
+def find_repo_end(lines, start_pos):
+    for offset, line in enumerate(lines[start_pos:]):
+        if line.startswith(")"):
+            return start_pos + offset
+    
 
 def set_up_project(project_name, workspace_content):
     os.mkdir(project_name)
@@ -77,13 +122,13 @@ def main(argv=None):
     parser.add_argument("--project", type=str, required=True)
     parser.add_argument("--internal_deps_file", type=str, default="internal_deps.bzl")
     parser.add_argument("--internal_deps_function_suffix", type=str, default="internal_deps")
-    parser.add_argument("--workspace_src_url", type=str)
+    parser.add_argument("--workspace_url", type=str, help="URL of the WORKSPACE file that should be used as template.")
 
     args = parser.parse_args(argv)
 
     try:
-        if args.workspace_src_url:
-            content = transform_existing_workspace(args.project, args.workspace_src_url)
+        if args.workspace_url:
+            content = transform_existing_workspace(args.project, args.workspace_url)
         else:
             content = create_new_workspace(
                 args.project, args.internal_deps_file, args.internal_deps_function_suffix
