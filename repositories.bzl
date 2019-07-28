@@ -12,11 +12,10 @@ def bazel_skylib():
     bazel_skylib_deps()
     # TODO: point to original repository (was bazel-skylib-0.8.0)
     maybe(
-        http_archive,
+        git_repository,
         name = "bazel_skylib",
-        url = "https://github.com/fweikert/bazel-skylib/archive/0.9.0-fedv2.tar.gz",
-        sha256 = "fa563fb9bec2b1b46286e516448806c17769d85c7bea20ed37cf7488cb5c26c7",
-        strip_prefix = "bazel-skylib-0.9.0-fedv2",
+        commit = "09ef2486777c8f43db48d384f9c41c1cd1265f46",
+        remote = "https://github.com/fweikert/bazel-skylib.git",
     )
 
 # TODO(fweikert): delete this function if it's not needed by the protobuf project itself.
