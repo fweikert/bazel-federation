@@ -58,6 +58,9 @@ def transform_existing_workspace(project_name, workspace_url):
     template = get_remote_file_contents(workspace_url)
     lines = template.split("\n")
 
+    # TODO: rewrite workspace name
+    # TODO: replace foo_deps() with foo() (also in the load)
+
     # Prefix internal deps bzl file target with @project_name
     sub_func = create_load_sub_func(project_name)
     lines = [LOAD_REGEX.sub(sub_func, l) for l in lines]
