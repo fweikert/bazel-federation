@@ -45,6 +45,8 @@ load("@{project}//:{internal_deps_file}", "{project}_{internal_deps_function_suf
 
 LOAD_REGEX = re.compile(r'^(load\(")([^@]{2})')
 
+WORKSPACE_NAME_PATTERN = re.compile(r'^(workspace\(name\s*=\s?"[^"]+)("\))')
+
 
 def create_new_workspace(project_name, internal_deps_file, internal_deps_function_suffix):
     return WORKSPACE_TEMPLATE.format(
@@ -59,7 +61,7 @@ def transform_existing_workspace(project_name, workspace_url):
     lines = template.split("\n")
 
     lines = rewrite_deps_function(project_name, lines)
-    # TODO: rewrite workspace name
+    lines = change_workspace_name(project_name, lines)
     lines = fix_repository_in_load_statements(project_name, lines)
     lines = replace_federation_repo(lines)
     return "\n".join(lines)
@@ -78,6 +80,19 @@ def rewrite_deps_function(project_name, lines):
     # However, I haven't tested that yet.
     pattern = re.compile(r"\b%s_deps\b" % project_name)
     return [pattern.sub(project_name, l) for l in lines]
+
+
+def change_workspace_name(project_name, lines):
+
+    def sub_func(m):
+        return "%s_federation_example%s" % (m.group(1), m.group(2))
+
+    for pos, l in enumerate(lines):
+        if WORKSPACE_NAME_PATTERN.search(l):
+            lines[pos] = WORKSPACE_NAME_PATTERN.sub(sub_func, l)
+            break
+
+    return lines
 
 
 def fix_repository_in_load_statements(project_name, lines):
