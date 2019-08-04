@@ -60,10 +60,7 @@ def transform_existing_workspace(project_name, workspace_url):
 
     lines = rewrite_deps_function(project_name, lines)
     # TODO: rewrite workspace name
-
-    # Prefix internal deps bzl file target with @project_name
-    sub_func = create_load_sub_func(project_name)
-    lines = [LOAD_REGEX.sub(sub_func, l) for l in lines]
+    lines = fix_repository_in_load_statements(project_name, lines)
     lines = replace_federation_repo(lines)
     return "\n".join(lines)
 
@@ -81,6 +78,12 @@ def rewrite_deps_function(project_name, lines):
     # However, I haven't tested that yet.
     pattern = re.compile(r"\b%s_deps\b" % project_name)
     return [pattern.sub(project_name, l) for l in lines]
+
+
+def fix_repository_in_load_statements(project_name, lines):
+    # Prefix internal deps bzl file target with @project_name
+    sub_func = create_load_sub_func(project_name)
+    return [LOAD_REGEX.sub(sub_func, l) for l in lines]
 
 
 def create_load_sub_func(project_name):
