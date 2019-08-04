@@ -58,8 +58,8 @@ def transform_existing_workspace(project_name, workspace_url):
     template = get_remote_file_contents(workspace_url)
     lines = template.split("\n")
 
+    lines = rewrite_deps_function(project_name, lines)
     # TODO: rewrite workspace name
-    # TODO: replace foo_deps() with foo() (also in the load)
 
     # Prefix internal deps bzl file target with @project_name
     sub_func = create_load_sub_func(project_name)
@@ -72,6 +72,15 @@ def get_remote_file_contents(http_url):
     with urllib.request.urlopen(http_url) as resp:
         reader = codecs.getreader("utf-8")
         return reader(resp).read()
+
+
+def rewrite_deps_function(project_name, lines):
+    # Replaces FOO_deps with FOO. We need the entire project repo, not just its dependencies.
+    # In theory we could always use FOO in the original workspace file if the maybe() macro
+    # realizes that it does not have to import repository FOO if the current workspace has the name FOO.
+    # However, I haven't tested that yet.
+    pattern = re.compile(r"\b%s_deps\b" % project_name)
+    return [pattern.sub(project_name, l) for l in lines]
 
 
 def create_load_sub_func(project_name):
