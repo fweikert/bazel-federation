@@ -15,7 +15,7 @@ def bazel_skylib():
     maybe(
         git_repository,
         name = "bazel_skylib",
-        commit = "09ef2486777c8f43db48d384f9c41c1cd1265f46",
+        commit = "01372dfb8541a7b97d42a7b1d7fea9c9108f2383",
         remote = "https://github.com/fweikert/bazel-skylib.git",
     )
 
