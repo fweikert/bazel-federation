@@ -1,6 +1,7 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
+load("//:java_repositories.bzl", "remote_jdk11_repos", "java_tools_javac11_repos")
 load("//:third_party_repos.bzl", "zlib", "org_golang_x_tools", "org_golang_x_sys", "six", "jinja2", "mistune", "markupsafe")
 
 # Repositories in this file have been tested with Bazel 0.26.0.
@@ -132,6 +133,12 @@ def rules_cc():
         urls = ["https://github.com/bazelbuild/rules_cc/archive/236c6eb75ccf1e4ea9bed8d5e8ca3648a46536b7"],
         sha256 = "1",
     )
+
+
+def rules_java_deps():
+    remote_jdk11_repos()
+    java_tools_javac11_repos()
+    bazel_skylib()
 
 
 def rules_python():
