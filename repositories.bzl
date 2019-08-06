@@ -126,7 +126,13 @@ def bazel():
         commit = "c689bf93917ad0efa8100b3a0fe1b43f1f1a1cdf",  # Mar 19, 2019
     )
 
+
+def rules_cc_deps():
+    pass  # empty for now
+
+
 def rules_cc():
+    rules_cc_deps()
     maybe(
         http_archive,
         name = "io_bazel_rules_cc",
