@@ -4,6 +4,7 @@ targets: &targets
 - "-@bazel_skylib//tests/maprule:maprule_tests"
 - "-@bazel_skylib//tests/maprule:mr_bash"
 - "-@bazel_skylib//tests/maprule:mr_bash_tool"
+- "-@bazel_skylib//tests/maprule:file_deps"
 common: &common
   build_targets: *targets
   test_targets: *targets
