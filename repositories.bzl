@@ -141,6 +141,17 @@ def rules_java_deps():
     bazel_skylib()
 
 
+def rules_java():
+    rules_java_deps()
+    # TODO: use correct repo
+    maybe(
+        git_repository,
+        name = "rules_java",
+        remote = "https://github.com/fweikert/rules_java.git",
+        commit = "7eadcc9fcb0528df54f3daa1ba4a0ad50865dc11",
+    )
+
+
 def rules_python():
     maybe(
         git_repository,
