@@ -1,47 +1,43 @@
+targets: &targets
+- "--"
+- "@bazel_skylib//..."
+- "-@bazel_skylib//tests/maprule:maprule_tests"
+- "-@bazel_skylib//tests/maprule:mr_bash"
+- "-@bazel_skylib//tests/maprule:mr_bash_tool"
+common: &common
+  build_targets: *targets
+  test_targets: *targets
 buildifier: latest
 tasks:
   macos:
     build_flags:
     - --incompatible_remap_main_repo
-    build_targets:
-    - '@bazel_skylib//...'
     setup:
     - python3.7 create_project_workspace.py --project=bazel_skylib --workspace_url=https://raw.githubusercontent.com/fweikert/bazel-skylib/master/WORKSPACE
     test_flags:
     - --test_env=PATH
-    test_targets:
-    - '@bazel_skylib//...'
+    <<: *common
   ubuntu1604:
     build_flags:
     - --incompatible_remap_main_repo
-    build_targets:
-    - '@bazel_skylib//...'
     setup:
     - python3.6 create_project_workspace.py --project=bazel_skylib --workspace_url=https://raw.githubusercontent.com/fweikert/bazel-skylib/master/WORKSPACE
     test_flags:
     - --test_env=PATH
-    test_targets:
-    - '@bazel_skylib//...'
+    <<: *common
   ubuntu1804:
     build_flags:
     - --incompatible_remap_main_repo
-    build_targets:
-    - '@bazel_skylib//...'
     setup:
     - python3.6 create_project_workspace.py --project=bazel_skylib --workspace_url=https://raw.githubusercontent.com/fweikert/bazel-skylib/master/WORKSPACE
     test_flags:
     - --test_env=PATH
-    test_targets:
-    - '@bazel_skylib//...'
+    <<: *common
   windows:
     build_flags:
     - --incompatible_remap_main_repo
-    build_targets:
-    - '@bazel_skylib//...'
     setup:
     - python.exe create_project_workspace.py --project=bazel_skylib --workspace_url=https://raw.githubusercontent.com/fweikert/bazel-skylib/master/WORKSPACE
     test_flags:
     - --test_env=LOCALAPPDATA
-    test_targets:
-    - --
-    - '@bazel_skylib//...'
+    <<: *common
