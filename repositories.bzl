@@ -133,11 +133,12 @@ def rules_cc_deps():
 
 def rules_cc():
     rules_cc_deps()
+    # TODO: use correct repository
     maybe(
-        http_archive,
-        name = "io_bazel_rules_cc",
-        urls = ["https://github.com/bazelbuild/rules_cc/archive/236c6eb75ccf1e4ea9bed8d5e8ca3648a46536b7"],
-        sha256 = "1",
+        git_repository,
+        name = "rules_cc",
+        remote = "https://github.com/fweikert/rules_cc.git",
+        commit = "ef949477adf506d927902ee802860d45c852d7f2",
     )
 
 
