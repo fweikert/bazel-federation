@@ -141,7 +141,7 @@ def rules_cc():
         git_repository,
         name = "rules_cc",
         remote = "https://github.com/fweikert/rules_cc.git",
-        commit = "eeb843d86149afc77a01f27f0e45801b0441e9ff",
+        commit = "1545d1c041107b60f615abf29d90f35c31cd6e23",
     )
 
 
