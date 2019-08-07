@@ -29,7 +29,8 @@ LOCAL_FEDERATION_TEMPLATE = """local_repository(
     path = "..",
 )"""
 
-WORKSPACE_TEMPLATE = """workspace(name = "{project}_federation_example")
+WORKSPACE_TEMPLATE = (
+    """workspace(name = "{project}_federation_example")
 
 %s
 
@@ -37,10 +38,12 @@ load("@bazel_federation//:repositories.bzl", "{project}")
 
 {project}()
 
-load("@{project}//:{internal_deps_file}", "{project}_{internal_deps_function_suffix}")
+load("@{project}//:internal_deps.bzl", "{project}_internal_deps")
 
-{project}_{internal_deps_function_suffix}()
-""" % LOCAL_FEDERATION_TEMPLATE
+{project}_internal_deps()
+"""
+    % LOCAL_FEDERATION_TEMPLATE
+)
 # TODO(fweikert): toolchain function?
 
 LOAD_REGEX = re.compile(r'^(load\(")([^@]{2})')
@@ -48,12 +51,8 @@ LOAD_REGEX = re.compile(r'^(load\(")([^@]{2})')
 WORKSPACE_NAME_PATTERN = re.compile(r'^(workspace\(name\s*=\s?"[^"]+)("\))')
 
 
-def create_new_workspace(project_name, internal_deps_file, internal_deps_function_suffix):
-    return WORKSPACE_TEMPLATE.format(
-        project=project_name,
-        internal_deps_file=internal_deps_file,
-        internal_deps_function_suffix=internal_deps_function_suffix,
-    )
+def create_new_workspace(project_name):
+    return WORKSPACE_TEMPLATE.format(project=project_name)
 
 
 def transform_existing_workspace(project_name, workspace_url):
@@ -83,7 +82,6 @@ def rewrite_deps_function(project_name, lines):
 
 
 def change_workspace_name(project_name, lines):
-
     def sub_func(m):
         return "%s_federation_example%s" % (m.group(1), m.group(2))
 
@@ -102,7 +100,6 @@ def fix_repository_in_load_statements(project_name, lines):
 
 
 def create_load_sub_func(project_name):
-
     def modify_load_statement(match):
         load = match.group(1)
         text = match.group(2)
@@ -122,7 +119,7 @@ def replace_federation_repo(lines):
     if start is None or end is None:
         raise Exception("TODO: improve this algorithm since start=%s, end=%s", start, end)
 
-    return lines[:start] + [LOCAL_FEDERATION_TEMPLATE] + lines[end+1:]
+    return lines[:start] + [LOCAL_FEDERATION_TEMPLATE] + lines[end + 1 :]
 
 
 def find_repo_start(lines):
@@ -135,7 +132,7 @@ def find_repo_end(lines, start_pos):
     for offset, line in enumerate(lines[start_pos:]):
         if line.startswith(")"):
             return start_pos + offset
-    
+
 
 def set_up_project(project_name, workspace_content):
     os.mkdir(project_name)
@@ -150,9 +147,11 @@ def main(argv=None):
 
     parser = argparse.ArgumentParser(description="Bazel Federation WORKSPACE Generation Script")
     parser.add_argument("--project", type=str, required=True)
-    parser.add_argument("--internal_deps_file", type=str, default="internal_deps.bzl")
-    parser.add_argument("--internal_deps_function_suffix", type=str, default="internal_deps")
-    parser.add_argument("--workspace_url", type=str, help="URL of the WORKSPACE file that should be used as template.")
+    parser.add_argument(
+        "--workspace_url",
+        type=str,
+        help="URL of the WORKSPACE file that should be used as template.",
+    )
 
     args = parser.parse_args(argv)
 
@@ -160,9 +159,7 @@ def main(argv=None):
         if args.workspace_url:
             content = transform_existing_workspace(args.project, args.workspace_url)
         else:
-            content = create_new_workspace(
-                args.project, args.internal_deps_file, args.internal_deps_function_suffix
-            )
+            content = create_new_workspace(args.project)
 
         set_up_project(args.project, content)
     except Exception as ex:
