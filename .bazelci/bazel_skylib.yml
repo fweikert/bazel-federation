@@ -14,7 +14,7 @@ tasks:
     build_flags:
     - --incompatible_remap_main_repo
     setup:
-    - python3.7 create_project_workspace.py --project=bazel_skylib --workspace_url=https://raw.githubusercontent.com/fweikert/bazel-skylib/master/WORKSPACE
+    - python3.7 create_project_workspace.py --project=bazel_skylib
     test_flags:
     - --test_env=PATH
     <<: *common
@@ -22,7 +22,7 @@ tasks:
     build_flags:
     - --incompatible_remap_main_repo
     setup:
-    - python3.6 create_project_workspace.py --project=bazel_skylib --workspace_url=https://raw.githubusercontent.com/fweikert/bazel-skylib/master/WORKSPACE
+    - python3.6 create_project_workspace.py --project=bazel_skylib
     test_flags:
     - --test_env=PATH
     <<: *common
@@ -30,7 +30,7 @@ tasks:
     build_flags:
     - --incompatible_remap_main_repo
     setup:
-    - python3.6 create_project_workspace.py --project=bazel_skylib --workspace_url=https://raw.githubusercontent.com/fweikert/bazel-skylib/master/WORKSPACE
+    - python3.6 create_project_workspace.py --project=bazel_skylib
     test_flags:
     - --test_env=PATH
     <<: *common
@@ -38,7 +38,7 @@ tasks:
     build_flags:
     - --incompatible_remap_main_repo
     setup:
-    - python.exe create_project_workspace.py --project=bazel_skylib --workspace_url=https://raw.githubusercontent.com/fweikert/bazel-skylib/master/WORKSPACE
+    - python.exe create_project_workspace.py --project=bazel_skylib
     test_flags:
     - --test_env=LOCALAPPDATA
     <<: *common
