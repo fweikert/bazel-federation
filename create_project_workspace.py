@@ -38,13 +38,20 @@ load("@bazel_federation//:repositories.bzl", "{project}")
 
 {project}()
 
+load("@{project}//:setup.bzl", "{project}_setup")
+
+{project}_setup()
+
 load("@{project}//:internal_deps.bzl", "{project}_internal_deps")
 
 {project}_internal_deps()
+
+load("@{project}//:internal_setup.bzl", "{project}_internal_setup")
+
+{project}_internal_setup()
 """
     % LOCAL_FEDERATION_TEMPLATE
 )
-# TODO(fweikert): toolchain function?
 
 LOAD_REGEX = re.compile(r'^(load\(")([^@]{2})')
 
