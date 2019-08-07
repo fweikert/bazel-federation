@@ -4,7 +4,7 @@ platforms:
     - '@rules_cc//...'
     run_targets: null
     setup:
-    - python3.7 create_project_workspace.py --project=rules_cc --workspace_url=https://raw.githubusercontent.com/fweikert/rules_cc/master/WORKSPACE
+    - python3.7 create_project_workspace.py --project=rules_cc
     test_flags:
     - --test_timeout=300
     test_targets:
@@ -14,7 +14,7 @@ platforms:
     - '@rules_cc//...'
     run_targets: null
     setup:
-    - python3.6 create_project_workspace.py --project=rules_cc --workspace_url=https://raw.githubusercontent.com/fweikert/rules_cc/master/WORKSPACE
+    - python3.6 create_project_workspace.py --project=rules_cc
     test_flags:
     - --test_timeout=300
     test_targets:
@@ -24,7 +24,7 @@ platforms:
     - '@rules_cc//...'
     run_targets: null
     setup:
-    - python3.6 create_project_workspace.py --project=rules_cc --workspace_url=https://raw.githubusercontent.com/fweikert/rules_cc/master/WORKSPACE
+    - python3.6 create_project_workspace.py --project=rules_cc
     test_flags:
     - --test_timeout=300
     test_targets:
@@ -36,7 +36,7 @@ platforms:
     - '@rules_cc//...'
     run_targets: null
     setup:
-    - python3.6 create_project_workspace.py --project=rules_cc --workspace_url=https://raw.githubusercontent.com/fweikert/rules_cc/master/WORKSPACE
+    - python3.6 create_project_workspace.py --project=rules_cc
     test_flags:
     - --test_timeout=300
     - --javabase=@openjdk11_linux_archive//:runtime
@@ -47,7 +47,7 @@ platforms:
     - '@rules_cc//...'
     run_targets: null
     setup:
-    - python.exe create_project_workspace.py --project=rules_cc --workspace_url=https://raw.githubusercontent.com/fweikert/rules_cc/master/WORKSPACE
+    - python.exe create_project_workspace.py --project=rules_cc
     test_flags:
     - --test_timeout=300
     test_targets:
