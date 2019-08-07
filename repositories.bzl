@@ -158,7 +158,7 @@ def rules_java():
         git_repository,
         name = "rules_java",
         remote = "https://github.com/fweikert/rules_java.git",
-        commit = "7eadcc9fcb0528df54f3daa1ba4a0ad50865dc11",
+        commit = "43d3483ce1e641cc8c5254259f63864c6142b00f",
     )
 
 
