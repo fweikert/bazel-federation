@@ -164,6 +164,8 @@ def main(argv=None):
 
     try:
         if args.workspace_url:
+            # TODO: decide what to do with this case - read the WORKSPACE file at the appropriate version, or delete this code?
+            raise ValueError("--workspace_url is currently not supported")
             content = transform_existing_workspace(args.project, args.workspace_url)
         else:
             content = create_new_workspace(args.project)
