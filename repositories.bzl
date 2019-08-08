@@ -2,7 +2,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//:java_repositories.bzl", "remote_jdk11_repos", "java_tools_javac11_repos")
-load("//:third_party_repos.bzl", "zlib", "org_golang_x_tools", "org_golang_x_sys", "six", "jinja2", "mistune", "markupsafe")
+load("//:third_party_repos.bzl", "abseil_py", "zlib", "org_golang_x_tools", "org_golang_x_sys", "six", "jinja2", "mistune", "markupsafe")
 
 # Repositories in this file have been tested with Bazel 0.26.0.
 
@@ -45,6 +45,18 @@ def protobuf_javalite():
         urls = ["https://github.com/protocolbuffers/protobuf/archive/javalite.zip"],
     )
 
+def rules_pkg_deps():
+    abseil_py()
+    six()
+
+def rules_pkg():
+    rules_pkg_deps()
+    maybe(
+        http_archive,
+        name = "rules_pkg",
+        url = "https://github.com/bazelbuild/rules_pkg/releases/download/0.2.0/rules_pkg-0.2.0.tar.gz",
+        sha256 = "5bdc04987af79bd27bc5b00fe30f59a858f77ffa0bd2d8143d5b31ad8b1bd71c",
+    )
 
 # TODO(fweikert): same as above
 def rules_go_deps():
@@ -149,6 +161,7 @@ def rules_java_deps():
     remote_jdk11_repos()
     java_tools_javac11_repos()
     bazel_skylib()
+    rules_pkg()
 
 
 def rules_java():
