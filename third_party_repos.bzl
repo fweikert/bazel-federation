@@ -133,16 +133,14 @@ def mistune():
         actual = "@mistune_archive//:mistune",
     )
 
-
 def abseil_py():
     maybe(
         http_archive,
         name = "io_abseil_py",
-        sha256 = "74a2203a9b4681851f4f1dfc17f2832e0a16bae0369b288b18b431cea63f0ee9",
-        strip_prefix = "abseil-py-pypi-v0.6.1",
+        sha256 = "3d0f39e0920379ff1393de04b573bca3484d82a5f8b939e9e83b20b6106c9bbe",
+        strip_prefix = "abseil-py-pypi-v0.7.1",
         urls = [
-            "https://mirror.bazel.build/github.com/abseil/abseil-py/archive/pypi-v0.6.1.zip",
-            "https://github.com/abseil/abseil-py/archive/pypi-v0.6.1.zip",
+            "https://github.com/abseil/abseil-py/archive/pypi-v0.7.1.tar.gz",
         ],
     )
 
