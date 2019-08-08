@@ -5,6 +5,10 @@ targets: &targets
 - "-@bazel_skylib//tests/maprule:mr_bash"
 - "-@bazel_skylib//tests/maprule:mr_bash_tool"
 - "-@bazel_skylib//tests/maprule:file_deps"
+# TODO: the following tests cannot be run remotely. fix them!
+- "-@bazel_skylib//tests/native_binary:args_test"
+- "-@bazel_skylib//tests/run_binary:run_bin_test"
+- "-@bazel_skylib//tests/run_binary:run_script_test"
 common: &common
   build_targets: *targets
   test_targets: *targets
