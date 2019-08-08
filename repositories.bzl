@@ -168,7 +168,7 @@ def rules_python():
         git_repository,
         name = "rules_python",
         remote = "https://github.com/fweikert/rules_python.git",
-        commit = "af41d1e1b916edac16b11e75ab6f18a2594db435",
+        commit = "4bc57830693837af2e679cf51a9c1201d4f97b6f",
     )
 
 #########################################
