@@ -107,7 +107,7 @@ def transform_config(project_name, repository_name, config):
         for field in ("run_targets", "build_targets", "test_targets"):
             targets = task_config.get(field)
             if targets:
-                task_config[field] = transform_all_targets(project_name, targets)
+                task_config[field] = transform_all_targets(repository_name, targets)
 
     return config
 
@@ -117,11 +117,11 @@ def get_python_version_for_task(name, task_config):
     return PYTHON_VERSIONS.get(platform, DEFAULT_PYTHON_VERSION)
 
 
-def transform_all_targets(project_name, targets):
-    return [transform_target(project_name, t) for t in targets]
+def transform_all_targets(repository_name, targets):
+    return [transform_target(repository_name, t) for t in targets]
 
 
-def transform_target(project_name, target):
+def transform_target(repository_name, target):
     if target == "--" or target.startswith("@"):
         return target
 
@@ -131,7 +131,7 @@ def transform_target(project_name, target):
         target = target[1:]
 
     slashes = "" if target.startswith("//") else "//"
-    return "{}@{}{}{}".format(exclusion_prefix, project_name, slashes, target)
+    return "{}@{}{}{}".format(exclusion_prefix, repository_name, slashes, target)
 
 
 def update_master_config(project_name):
