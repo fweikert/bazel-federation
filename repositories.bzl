@@ -163,10 +163,11 @@ def rules_java():
 
 
 def rules_python():
+    # TODO: use correct repository
     maybe(
         git_repository,
         name = "rules_python",
-        remote = "https://github.com/bazelbuild/rules_python.git",
+        remote = "https://github.com/fweikert/rules_python.git",
         commit = "af41d1e1b916edac16b11e75ab6f18a2594db435",
     )
 
