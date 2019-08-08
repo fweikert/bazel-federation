@@ -33,7 +33,7 @@ load("@bazel_federation//:repositories.bzl", "{project}")
 
 {project}()
 
-load("@{repo}//:setup.bzl", "{project}_setup")
+load("@bazel_federation//setup:{project}.bzl", "{project}_setup")
 
 {project}_setup()
 
