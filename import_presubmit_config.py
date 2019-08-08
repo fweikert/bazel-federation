@@ -97,12 +97,12 @@ def load_remote_config(http_url):
         return yaml.safe_load(reader(resp))
 
 
-def transform_config(project_name, config):
+def transform_config(project_name, repository_name, config):
     tasks = config.get("tasks") or config.get("platforms")
     for name, task_config in tasks.items():
         task_config["setup"] = [
-            "%s create_project_workspace.py --project=%s"
-            % (get_python_version_for_task(name, task_config), project_name)
+            "%s create_project_workspace.py --project=%s --repo=%s"
+            % (get_python_version_for_task(name, task_config), project_name, repository_name)
         ]
         for field in ("run_targets", "build_targets", "test_targets"):
             targets = task_config.get(field)
@@ -183,9 +183,14 @@ def main(argv=None):
     parser.add_argument(
         "--project",
         type=str,
-        help="Name of the project that should be used as remote repository prefix in the new config. "
+        help="Name of the project in the federation. "
         "This flag can be omitted if --config_url points to a file in the bazelbuild GitHub organisation "
         "and if the repository name of that config file should be used as project name.",
+    )
+    parser.add_argument(
+        "--repo",
+        type=str,
+        help="Name of the remote repository. If empty, the project name is being used instead.",
     )
 
     args = parser.parse_args(argv)
@@ -195,7 +200,8 @@ def main(argv=None):
 
     try:
         project_name = args.project or get_project_name_from_url(args.config_url)
-        config = transform_config(project_name, load_config(args.config_url))
+        repo = args.repo or project_name
+        config = transform_config(project_name, repo, load_config(args.config_url))
         update_master_config(project_name)
         save_config_file("%s.yml" % project_name, config)
     except Exception as ex:
